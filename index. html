@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تفاعلي عن التربة</title>
+<style>
+    body {
+        font-family: "Arial", sans-serif;
+        background: #f0f8ff;
+        margin: 0;
+        padding: 0;
+    }
+    header {
+        background-color: #4caf50;
+        color: white;
+        padding: 20px;
+        text-align: center;
+    }
+    main {
+        max-width: 900px;
+        margin: 20px auto;
+        padding: 20px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+        color: #4caf50;
+    }
+    label {
+        display: block;
+        margin-top: 15px;
+        font-weight: bold;
+    }
+    input[type="number"] {
+        padding: 5px;
+        width: 100px;
+        margin-left: 10px;
+    }
+    button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        border-radius: 5px;
+    }
+    button:hover {
+        background-color: #45a049;
+    }
+    .result {
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 10px;
+        font-weight: bold;
+        font-size: 18px;
+    }
+    .sand { background-color: #fff5e6; color: #ff6600; }
+    .clay { background-color: #ffe6f0; color: #cc0066; }
+    .silt { background-color: #e6f2ff; color: #0066cc; }
+    .loam { background-color: #e6ffe6; color: #009900; }
+    img {
+        max-width: 100%;
+        border-radius: 10px;
+        margin-top: 10px;
+    }
+    .soil-info {
+        margin-top: 15px;
+        padding: 10px;
+        border-left: 5px solid #4caf50;
+        background: #f9f9f9;
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <h1>تفاعلي عن التربة 🌱</h1>
+    <p>اكتشف نوع التربة من نسب الرمل والطمي والطين وتعلم عنها بطريقة ممتعة!</p>
+</header>
+
+<main>
+    <h2>أدخل نسب مكونات التربة (%)</h2>
+    <form id="soilForm">
+        <label>نسبة الرمل:
+            <input type="number" id="sand" min="0" max="100" required> %
+        </label>
+        <label>نسبة الطمي:
+            <input type="number" id="silt" min="0" max="100" required> %
+        </label>
+        <label>نسبة الطين:
+            <input type="number" id="clay" min="0" max="100" required> %
+        </label>
+        <button type="button" onclick="checkSoil()">تحقق من التربة</button>
+    </form>
+
+    <div id="result" class="result" style="display:none;"></div>
+
+    <h2>أنواع التربة</h2>
+    <div class="soil-info">
+        <h3>تربة رملية</h3>
+        <p>غنية بالرمل وفقره بالمواد العضوية، جيدة للصرف ولكنها لا تحتفظ بالماء جيدًا.</p>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Sandy_soil.jpg" alt="رملية">
+    </div>
+
+    <div class="soil-info">
+        <h3>تربة طينية</h3>
+        <p>غنية بالطين، تحتفظ بالماء جيدًا ولكن قد تصعب عملية الزراعة بسبب الصلابة.</p>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/0f/Clay_soil.jpg" alt="طينية">
+    </div>
+
+    <div class="soil-info">
+        <h3>تربة طميّة</h3>
+        <p>متوازنة بين الرمل والطين، خصوبة عالية ومناسبة لمعظم النباتات.</p>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/2/28/Silt_soil.jpg" alt="طميّة">
+    </div>
+
+    <div class="soil-info">
+        <h3>تربة فُتاتية (Loam)</h3>
+        <p>مزيج متوازن من الرمل والطمي والطين، مثالية للزراعة وتحافظ على الماء والهواء.</p>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Loam_soil.jpg" alt="Loam">
+    </div>
+
+</main>
+
+<script>
+function checkSoil() {
+    const sand = parseFloat(document.getElementById("sand").value);
+    const silt = parseFloat(document.getElementById("silt").value);
+    const clay = parseFloat(document.getElementById("clay").value);
+    const resultDiv = document.getElementById("result");
+
+    const total = sand + silt + clay;
+    if(total !== 100) {
+        resultDiv.style.display = "block";
+        resultDiv.style.backgroundColor = "#ffcccc";
+        resultDiv.style.color = "#cc0000";
+        resultDiv.textContent = "❌ مجموع النسب يجب أن يكون 100%! لديك: " + total + "%";
+        return;
+    }
+
+    let soilType = "";
+    let bgClass = "";
+
+    // تحديد نوع التربة حسب نسب USDA تقريبية
+    if(clay > 40) {
+        soilType = "تربة طينية";
+        bgClass = "clay";
+    } else if(sand > 70) {
+        soilType = "تربة رملية";
+        bgClass = "sand";
+    } else if(silt > 50) {
+        soilType = "تربة طميّة";
+        bgClass = "silt";
+    } else {
+        soilType = "تربة فُتاتية (Loam)";
+        bgClass = "loam";
+    }
+
+    resultDiv.style.display = "block";
+    resultDiv.className = "result " + bgClass;
+    resultDiv.textContent = "✅ نوع التربة هو: " + soilType;
+}
+</script>
+
+</body>
+</html>

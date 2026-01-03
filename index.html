@@ -3,66 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة البرامج التخصصية | م. محمد طه عطا</title>
+    <title>منصة م. محمد طه عطا</title>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <style>
-        :root { --primary: #1a237e; --accent: #ffd600; --bg: #f8f9fa; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; color: #333; overflow-x: hidden; }
-        header { 
-            background: linear-gradient(135deg, var(--primary) 0%, #000051 100%); 
-            color: white; padding: 60px 20px; text-align: center; border-bottom: 6px solid var(--accent);
-        }
-        .ad-banner { background: var(--accent); color: #000; padding: 12px; font-weight: bold; display: none; text-align: center; }
-        #authOverlay { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.95); z-index: 10000; display: flex; align-items: center; justify-content: center; 
-        }
-        .auth-card { background: white; padding: 40px; border-radius: 30px; width: 90%; max-width: 400px; text-align: center; }
-        .icon-grid { 
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); 
-            gap: 25px; padding: 40px 20px; max-width: 1100px; margin: auto; 
-        }
-        .dynamic-item { 
-            background: white; padding: 30px 15px; border-radius: 20px; text-decoration: none; 
-            color: var(--primary); display: flex; flex-direction: column; align-items: center; 
-            box-shadow: 0 8px 20px rgba(0,0,0,0.05); transition: 0.4s; border: 1px solid #eee;
-        }
-        .dynamic-item:hover { transform: translateY(-10px); background: var(--primary); color: white; }
-        .dynamic-item i { font-size: 50px; margin-bottom: 15px; }
-        input { width: 100%; padding: 15px; margin: 10px 0; border: 2px solid #eee; border-radius: 12px; box-sizing: border-box; }
-        .btn-main { background: var(--primary); color: white; border: none; padding: 18px; width: 100%; border-radius: 12px; cursor: pointer; font-weight: bold; }
+        :root { --primary: #1a237e; --accent: #ffd600; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; margin: 0; text-align: center; }
+        header { background: linear-gradient(135deg, var(--primary), #000051); color: white; padding: 40px; border-bottom: 5px solid var(--accent); }
+        .icon-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; padding: 30px; max-width: 1000px; margin: auto; }
+        .card { background: white; padding: 20px; border-radius: 15px; text-decoration: none; color: var(--primary); font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: 0.3s; }
+        .card:hover { transform: translateY(-5px); background: var(--primary); color: white; }
+        #authOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; display: flex; align-items: center; justify-content: center; }
+        .auth-box { background: white; padding: 30px; border-radius: 20px; width: 320px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
     </style>
 </head>
 <body>
 
 <div id="authOverlay">
-    <div class="auth-card">
-        <div style="font-size: 60px;">🏗️</div>
-        <h2 style="color: var(--primary)">دخول المنصة الهندسية</h2>
-        <p>بإشراف م. محمد طه عطا</p>
-        <input type="text" id="userName" placeholder="الاسم الكامل">
-        <input type="text" id="userPhone" placeholder="رقم الواتساب">
-        <button class="btn-main" onclick="requestEntry()">🚀 طلب تفعيل العضوية</button>
-        <p id="authStatus" style="font-size: 14px; margin-top: 15px; color: green;"></p>
+    <div class="auth-box">
+        <h3>🏗️ طلب دخول المنصة</h3>
+        <input type="text" id="uName" placeholder="الاسم الكامل">
+        <input type="text" id="uPhone" placeholder="رقم الواتساب">
+        <button onclick="checkAccess()" style="width:100%; padding:15px; background:var(--primary); color:white; border:none; border-radius:8px; cursor:pointer;">دخول / طلب تفعيل</button>
+        <p id="stMsg" style="font-size:13px; margin-top:10px; color: #d32f2f;"></p>
     </div>
 </div>
-
-<div id="topAd" class="ad-banner"></div>
 
 <header>
-    <h1>🏛️ المهندس المدني المحترف</h1>
-    <p>تطوير مهارات المهندسين في البرامج الإنشائية والتنفيذية</p>
-    <a href="https://wa.me/249999240574" style="background:#25d366; color:white; padding:10px 20px; border-radius:50px; text-decoration:none; font-weight:bold;">💬 واتساب: 0999240574</a>
+    <h1>🏛️ منصة البرامج التخصصية</h1>
+    <p>م. محمد طه عطا | 0999240574</p>
 </header>
 
-<div class="icon-grid" id="iconsDisplay">
-    </div>
+<div id="adBar" style="display:none; background:var(--accent); padding:10px; font-weight:bold;"></div>
 
-<div id="examContainer" style="max-width: 900px; margin: 20px auto; display: none; padding: 15px;">
-    <h3 style="text-align: center; color: var(--primary);">📑 الامتحان التقييمي</h3>
-    <div id="examFrame" style="border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1);"></div>
-</div>
+<div class="icon-grid" id="mainGrid"></div>
 
 <script>
     const firebaseConfig = {
@@ -76,40 +51,37 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    function requestEntry() {
-        const name = document.getElementById('userName').value;
-        const phone = document.getElementById('userPhone').value;
-        if(name && phone) {
-            db.ref('requests/' + phone).set({ name, phone, time: new Date().toLocaleString() })
-            .then(() => { document.getElementById('authStatus').innerText = "✅ تم إرسال طلبك للإدارة بنجاح."; });
-        }
+    function checkAccess() {
+        const name = document.getElementById('uName').value;
+        const phone = document.getElementById('uPhone').value;
+        if(!name || !phone) return alert("يرجى إكمال البيانات");
+
+        // التحقق هل هو معتمد؟
+        db.ref('approved_users/' + phone).once('value', s => {
+            if(s.exists()) {
+                document.getElementById('authOverlay').style.display = "none";
+                loadContent();
+            } else {
+                // إذا لم يكن معتمداً، يرسل طلب تفعيل
+                db.ref('requests/' + phone).set({ name, phone, time: new Date().toLocaleString() });
+                document.getElementById('stMsg').innerText = "⏳ تم إرسال طلبك. يرجى انتظار تفعيل العضوية من الإدارة.";
+            }
+        });
     }
 
-    db.ref('current_ad').on('value', s => {
-        const ad = document.getElementById('topAd');
-        if(s.val()) { ad.style.display = "block"; ad.innerText = "📢 " + s.val(); }
-    });
-
-    db.ref('links').on('value', s => {
-        const display = document.getElementById('iconsDisplay');
-        display.innerHTML = "";
-        s.forEach(child => {
-            const data = child.val();
-            display.innerHTML += `
-                <a href="${data.url}" target="_blank" class="dynamic-item">
-                    <i>${data.icon}</i>
-                    <span>${data.title}</span>
-                </a>`;
+    function loadContent() {
+        db.ref('current_ad').on('value', s => {
+            if(s.val()) { document.getElementById('adBar').style.display = "block"; document.getElementById('adBar').innerText = "📢 " + s.val(); }
         });
-    });
 
-    db.ref('current_exam').on('value', s => {
-        const container = document.getElementById('examContainer');
-        if(s.val()) {
-            container.style.display = "block";
-            document.getElementById('examFrame').innerHTML = `<iframe src="${s.val()}" width="100%" height="600" frameborder="0"></iframe>`;
-        }
-    });
+        db.ref('links').on('value', s => {
+            const grid = document.getElementById('mainGrid');
+            grid.innerHTML = "";
+            s.forEach(c => {
+                grid.innerHTML += `<a href="${c.val().url}" class="card"><span>${c.val().icon}</span><br>${c.val().title}</a>`;
+            });
+        });
+    }
 </script>
 </body>
 </html>

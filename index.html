@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة البرامج التخصصية | م. محمد طه عطا</title>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+    <style>
+        :root {
+            --primary: #1a237e; /* كحلي ملكي */
+            --accent: #ffd600;  /* ذهبي هندسي */
+            --bg-light: #f4f7f6;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-light);
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* واجهة الدخول الاحترافية */
+        #authOverlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(26, 35, 126, 0.95) 0%, rgba(0, 0, 0, 0.9) 100%);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(8px);
+        }
+
+        .auth-card {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 25px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            border-top: 5px solid var(--accent);
+        }
+
+        /* إشعارات جانبية في واجهة الدخول */
+        .side-notice {
+            position: absolute;
+            right: 20px;
+            top: 50px;
+            width: 250px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            border-right: 5px solid var(--accent);
+            display: none;
+            font-size: 14px;
+            animation: slideIn 0.5s ease;
+        }
+
+        /* الهيدر الرئيسي */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #000051 100%);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+            border-bottom: 5px solid var(--accent);
+        }
+
+        .whatsapp-btn {
+            background: #25d366;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+        }
+
+        /* شبكة الأيقونات */
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 25px;
+            padding: 40px 20px;
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .icon-card {
+            background: var(--white);
+            padding: 30px 15px;
+            border-radius: 20px;
+            text-decoration: none;
+            color: var(--primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            transition: 0.3s;
+            border: 1px solid #eee;
+        }
+
+        .icon-card:hover {
+            transform: translateY(-10px);
+            background: var(--primary);
+            color: white;
+        }
+
+        .icon-card i { font-size: 45px; margin-bottom: 15px; }
+        .icon-card span { font-weight: bold; font-size: 1.1rem; }
+
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 10px; }
+        .btn-access { background: var(--primary); color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 16px; }
+
+        @keyframes slideIn { from { transform: translateX(100px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    </style>
+</head>
+<body>
+
+<div id="authOverlay">
+    <div id="sideNotifications" class="side-notice">
+        <h4 style="margin:0; color:var(--accent);">🔔 إعلان هام:</h4>
+        <div id="noticeContent" style="margin-top:10px;">جاري تحميل التنبيهات...</div>
+    </div>
+    
+    <div class="auth-card">
+        <div style="font-size: 50px;">🏛️</div>
+        <h2 style="color: var(--primary); margin: 5px 0;">منصة البرامج التخصصية</h2>
+        <p style="font-weight: bold; color: #666; margin-bottom: 20px;">📐 تخصص الهندسة المدنية 📐</p>
+        <p style="background: var(--accent); display: inline-block; padding: 5px 15px; border-radius: 20px; font-size: 13px; font-weight: bold;">إدارة: م. محمد طه عطا</p>
+        
+        <input type="text" id="regName" placeholder="👤 الاسم الكامل">
+        <input type="text" id="regPhone" placeholder="📞 رقم الواتساب">
+        <button class="btn-access" onclick="requestAccess()">🚀 طلب تفعيل العضوية</button>
+        <p id="statusMsg" style="font-size: 12px; margin-top: 15px; color: #777;"></p>
+    </div>
+</div>
+
+<header>
+    <h1>🏗️ منصة المهندس المدني المحترف</h1>
+    <p>بوابتك للتميز والاحتراف في عالم الهندسة المدنية</p>
+    <a href="https://wa.me/249999240574" class="whatsapp-btn">💬 تواصل واتساب: 0999240574</a>
+</header>
+
+<div style="max-width: 850px; margin: 20px auto; padding: 15px;">
+    <div id="adBox" style="display:none; background:#fff3e0; border:2px dashed #ff9800; padding:15px; border-radius:15px; color:#e65100; margin-bottom:20px; font-weight: bold;"></div>
+    
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.2);">
+        <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/5W_vst9-Xsc" frameborder="0" allowfullscreen></iframe>
+    </div>
+</div>
+
+<div class="icon-grid">
+    <a href="soil-edu.html" target="_blank" class="icon-card"><i>🌱</i><span>مفاهيم التربة</span></a>
+    <a href="site-foundations.html" target="_blank" class="icon-card"><i>🏗️</i><span>مراجعة القواعد</span></a>
+    <a href="#" class="icon-card"><i>💻</i><span>التصميم الإنشائي</span></a>
+    <a href="#" class="icon-card"><i>📜</i><span>الدورات التدريبية</span></a>
+</div>
+
+<script>
+    // --- بيانات Firebase الخاصة بك ---
+    var firebaseConfig = {
+      apiKey: "AIzaSyAQtlovkQYAanzfBpX5cePgcXffLau-k-M",
+      authDomain: "civil-engineering-platform.firebaseapp.com",
+      databaseURL: "https://civil-engineering-platform-default-rtdb.firebaseio.com", 
+      projectId: "civil-engineering-platform",
+      storageBucket: "civil-engineering-platform.firebasestorage.app",
+      messagingSenderId: "329809780930",
+      appId: "1:329809780930:web:410fd497bee2c8a13c9b5b"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    var db = firebase.database();
+
+    // 1. استقبال إشعارات واجهة الدخول الجانبية
+    db.ref('entry_notifications').on('value', (snapshot) => {
+        const msg = snapshot.val();
+        const sideBox = document.getElementById('sideNotifications');
+        const textBox = document.getElementById('noticeContent');
+        if(msg && msg.trim() !== "") {
+            sideBox.style.display = "block";
+            textBox.innerText = msg;
+        } else {
+            sideBox.style.display = "none";
+        }
+    });
+
+    // 2. استقبال إعلانات الشريط الرئيسي
+    db.ref('current_ad').on('value', (snap) => {
+        const adBox = document.getElementById('adBox');
+        if(snap.val()) {
+            adBox.style.display = "block";
+            adBox.innerText = "📢 " + snap.val();
+        } else {
+            adBox.style.display = "none";
+        }
+    });
+
+    // 3. وظيفة إرسال طلب الوصول
+    function requestAccess() {
+        const name = document.getElementById('regName').value;
+        const phone = document.getElementById('regPhone').value;
+        if(name && phone) {
+            db.ref('requests/' + phone).set({
+                name: name,
+                phone: phone,
+                status: 'pending',
+                time: new Date().toLocaleString()
+            }).then(() => {
+                document.getElementById('statusMsg').innerText = "✅ تم إرسال طلبك للإدارة. سيتم التواصل معك قريباً.";
+                document.getElementById('statusMsg').style.color = "green";
+            });
+        } else {
+            alert("يرجى إدخال البيانات كاملة");
+        }
+    }
+</script>
+
+</body>
+</html>

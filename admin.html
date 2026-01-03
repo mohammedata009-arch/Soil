@@ -2,42 +2,49 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>لوحة التحكم | م. محمد طه</title>
+    <title>غرفة التحكم | م. محمد طه</title>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; display: flex; }
         .sidebar { width: 280px; background: #1a237e; color: white; min-height: 100vh; padding: 20px; position: fixed; right: 0; }
-        .main { margin-right: 280px; padding: 40px; width: 100%; }
+        .main { margin-right: 280px; padding: 40px; width: calc(100% - 280px); }
         .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 30px; }
         input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
         button { background: #1a237e; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold; }
-        .delete-btn { background: #ff5252; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 12px; }
+        .del-btn { background: #ff5252; padding: 5px 10px; border-radius: 5px; color: white; border: none; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div class="sidebar">
-    <h2>⚙️ إدارة المنصة</h2>
-    <p>مرحباً بشمهندس محمد</p>
+    <h2>⚙️ لوحة التحكم</h2>
+    <p>مرحباً بشمهندس محمد طه</p>
     <hr>
-    <p>تحكم في الإعلانات، الروابط، وطلبات الدخول من هنا.</p>
+    <p>تحكم في المنصة بالكامل من هنا.</p>
 </div>
 
 <div class="main">
     <div class="card">
-        <h3>📢 إعلان الشريط العلوي</h3>
-        <input type="text" id="adVal" placeholder="اكتب نص الإعلان هنا">
+        <h3>📢 نشر إعلان جديد</h3>
+        <input type="text" id="adVal" placeholder="نص الإعلان العلوي">
         <button onclick="updateData('current_ad', 'adVal')">نشر الإعلان 🚀</button>
         <button onclick="db.ref('current_ad').remove()" style="background:#666">حذف الإعلان</button>
     </div>
 
     <div class="card">
         <h3>🔗 إضافة أيقونة/رابط جديد</h3>
-        <input type="text" id="lTitle" placeholder="عنوان الزر (مثلاً: دورة الساب)">
-        <input type="text" id="lIcon" placeholder="إيموجي (مثلاً: 🏗️)">
-        <input type="text" id="lUrl" placeholder="الرابط (مثلاً: soil-edu.html)">
-        <button onclick="addLink()">إضافة فوراً ✅</button>
+        <input type="text" id="lTitle" placeholder="عنوان الزر">
+        <input type="text" id="lIcon" placeholder="إيموجي (مثل 🏗️ أو 📚)">
+        <input type="text" id="lUrl" placeholder="الرابط (رابط خارجي أو ملف .html)">
+        <button onclick="addLink()">إضافة الزر فوراً ✅</button>
+    </div>
+
+    <div class="card">
+        <h3>📝 نشر امتحان (رابط Google Form)</h3>
+        <input type="text" id="exUrl" placeholder="رابط Google Form">
+        <button onclick="updateData('current_exam', 'exUrl')">نشر الامتحان 📑</button>
+        <button onclick="db.ref('current_exam').remove()" style="background:#666">إغلاق الامتحان</button>
     </div>
 
     <div class="card">
@@ -59,8 +66,7 @@
     const db = firebase.database();
 
     function updateData(path, id) {
-        const val = document.getElementById(id).value;
-        db.ref(path).set(val).then(() => alert("تم التحديث ✅"));
+        db.ref(path).set(document.getElementById(id).value).then(() => alert("✅ تم التحديث"));
     }
 
     function addLink() {
@@ -69,7 +75,7 @@
         const url = document.getElementById('lUrl').value;
         if(title && url) {
             db.ref('links').push({ title, icon, url }).then(() => {
-                alert("تمت الإضافة ✅");
+                alert("✅ تمت الإضافة");
                 document.getElementById('lTitle').value = "";
                 document.getElementById('lUrl').value = "";
             });
@@ -79,9 +85,9 @@
     db.ref('requests').on('value', s => {
         let html = "";
         s.forEach(c => {
-            html += `<div style="padding:10px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; align-items:center;">
+            html += `<div style="border-bottom:1px solid #eee; padding:10px; display:flex; justify-content:space-between;">
                 <span><b>${c.val().name}</b> (${c.val().phone})</span>
-                <button class="delete-btn" onclick="db.ref('requests/${c.key}').remove()">حذف</button>
+                <button class="del-btn" onclick="db.ref('requests/${c.key}').remove()">حذف</button>
             </div>`;
         });
         document.getElementById('reqBox').innerHTML = html || "لا توجد طلبات.";

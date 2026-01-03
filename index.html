@@ -1,93 +1,105 @@
-                <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المهندس المدني المحترف - م. محمد طه</title>
+    <title>لوحة التحكم | م. محمد طه عطا</title>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <style>
-        :root { --primary: #0d47a1; --accent: #ffc107; --bg: #f4f7f6; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; text-align: center; }
-        header { background: var(--primary); color: white; padding: 40px 20px; border-bottom: 6px solid var(--accent); }
-        .whatsapp-btn { background: #25d366; color: white; padding: 12px 25px; border-radius: 50px; text-decoration: none; display: inline-block; margin-top: 15px; font-weight: bold; }
-        .promo-window { max-width: 850px; margin: 30px auto; padding: 15px; }
-        .video-container { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-        .video-container iframe { position: absolute; top:0; left:0; width:100%; height:100%; border:0; }
-        .icon-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; max-width: 1000px; margin: 40px auto; padding: 0 20px; }
-        .icon-card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); transition: 0.3s; text-decoration: none; color: var(--primary); border: 1px solid #eee; }
-        .icon-card:hover { transform: translateY(-10px); background: var(--primary); color: white; }
-        .comment-section { max-width: 850px; margin: 40px auto; background: white; padding: 25px; border-radius: 15px; text-align: right; }
-        .comment-box { background: #f9f9f9; padding: 15px; border-radius: 10px; margin-bottom: 10px; border-right: 4px solid var(--primary); }
-        #authOverlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:9999; display:none; align-items:center; justify-content:center; color:#333; }
+        :root { --primary: #1a237e; --accent: #ffd600; --bg: #f4f7f6; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; background: var(--bg); }
+        .sidebar { width: 250px; background: var(--primary); color: white; min-height: 100vh; position: fixed; right: 0; box-shadow: -2px 0 10px rgba(0,0,0,0.1); }
+        .sidebar-header { padding: 30px 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: bold; font-size: 1.2rem; color: var(--accent); }
+        .nav-item { padding: 18px 25px; cursor: pointer; display: flex; align-items: center; gap: 15px; transition: 0.3s; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .nav-item:hover, .nav-item.active { background: rgba(255,255,255,0.1); color: var(--accent); }
+        .main-content { margin-right: 250px; padding: 40px; width: 100%; }
+        .admin-card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); display: none; animation: fadeIn 0.5s; }
+        .admin-card.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        textarea { width: 100%; height: 100px; padding: 15px; border-radius: 12px; border: 1px solid #ddd; margin: 15px 0; resize: none; font-family: inherit; }
+        .btn { padding: 12px 25px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { opacity: 0.9; transform: scale(1.02); }
     </style>
 </head>
 <body>
 
-<div id="authOverlay">
-    <div style="background:white; padding:30px; border-radius:15px; width:90%; max-width:400px;">
-        <h2>🔒 قسم المشتركين</h2>
-        <p>يرجى طلب التفعيل من الإدارة للوصول للمحتوى.</p>
-        <input type="text" id="regName" placeholder="الاسم" style="width:100%; padding:10px; margin:10px 0;">
-        <input type="text" id="regPhone" placeholder="رقم الواتساب" style="width:100%; padding:10px; margin:10px 0;">
-        <button onclick="requestAccess()" style="width:100%; padding:12px; background:var(--primary); color:white; border:none; cursor:pointer;">إرسال طلب</button>
+    <div class="sidebar">
+        <div class="sidebar-header">🏗️ إدارة المنصة</div>
+        <div class="nav-item active" onclick="showTab('tab-ads', this)">📢 الإعلانات</div>
+        <div class="nav-item" onclick="showTab('tab-notify', this)">🔔 إشعار الدخول</div>
+        <div class="nav-item" onclick="showTab('tab-users', this)">👥 طلبات المشتركين</div>
     </div>
-</div>
 
-<header>
-    <h1>المهندس المدني المحترف</h1>
-    <p>م. محمد طه عطا - منصة البرامج التخصصية</p>
-    <a href="https://wa.me/249999240574" class="whatsapp-btn">واتساب: 0999240574</a>
-</header>
+    <div class="main-content">
+        <div id="tab-ads" class="admin-card active">
+            <h2>📢 إعلان الشريط الرئيسي</h2>
+            <p>سيظهر هذا النص في الصفحة الرئيسية أسفل الفيديو.</p>
+            <textarea id="adInput" placeholder="اكتب نص الإعلان هنا..."></textarea>
+            <button class="btn btn-primary" onclick="saveToFirebase('current_ad', 'adInput')">نشر الإعلان الآن 🚀</button>
+        </div>
 
-<div class="promo-window">
-    <div class="video-container">
-        <iframe src="https://www.youtube.com/embed/5W_vst9-Xsc" allowfullscreen></iframe>
+        <div id="tab-notify" class="admin-card">
+            <h2>🔔 إشعار واجهة الدخول</h2>
+            <p>سيظهر هذا التنبيه في اللوحة الجانبية لغير المسجلين.</p>
+            <textarea id="notifyInput" placeholder="اكتب تنبيه واجهة الدخول هنا..."></textarea>
+            <button class="btn btn-primary" onclick="saveToFirebase('entry_notifications', 'notifyInput')">تحديث التنبيه 🔔</button>
+        </div>
+
+        <div id="tab-users" class="admin-card">
+            <h2>👥 مراجعة طلبات الوصول</h2>
+            <div id="usersList" style="margin-top: 20px;">جاري جلب الطلبات...</div>
+        </div>
     </div>
-</div>
 
-<div class="icon-grid">
-    <a href="soil-edu.html" target="_blank" class="icon-card"><i>🧠</i><br><span>مفاهيم التربة</span></a>
-    <a href="site-foundations.html" target="_blank" class="icon-card"><i>👷</i><br><span>مراجعة القواعد</span></a>
-    <a href="#" class="icon-card"><i>📐</i><br><span>التصميم الإنشائي</span></a>
-    <a href="#" class="icon-card"><i>🎓</i><br><span>دورات حصرية</span></a>
-</div>
+    <script>
+        // بياناتك الحقيقية التي استخرجتها من الصورة
+        const firebaseConfig = {
+            apiKey: "AIzaSyAQtlovkQYAanzfBpX5cePgcXffLau-k-M",
+            authDomain: "civil-engineering-platform.firebaseapp.com",
+            databaseURL: "https://civil-engineering-platform-default-rtdb.firebaseio.com", 
+            projectId: "civil-engineering-platform",
+            storageBucket: "civil-engineering-platform.firebasestorage.app",
+            messagingSenderId: "329809780930",
+            appId: "1:329809780930:web:410fd497bee2c8a13c9b5b"
+        };
 
-<div class="comment-section">
-    <h3>💬 نقاشات المهندسين</h3>
-    <textarea id="cText" placeholder="اكتب تعليقك..." style="width:100%; height:80px; padding:10px;"></textarea>
-    <button onclick="sendComment()" style="margin-top:10px; padding:10px 20px; background:var(--primary); color:white; border:none; cursor:pointer;">إرسال</button>
-    <div id="commentsList" style="margin-top:20px;"></div>
-</div>
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
 
-<script>
-    // الصق config الخاص بـ Firebase هنا
-    var firebaseConfig = { apiKey: "...", databaseURL: "...", projectId: "...", appId: "..." };
-    firebase.initializeApp(firebaseConfig);
-    var db = firebase.database();
-
-    function requestAccess() {
-        const name = document.getElementById('regName').value;
-        const phone = document.getElementById('regPhone').value;
-        if(name && phone) {
-            db.ref('requests/' + phone).set({name, phone, status: 'pending'});
-            alert("تم إرسال طلبك للإدارة");
+        function showTab(id, el) {
+            document.querySelectorAll('.admin-card').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            el.classList.add('active');
         }
-    }
 
-    function sendComment() {
-        const text = document.getElementById('cText').value;
-        if(text) db.ref('comments').push({name: "مهندس", text: text});
-    }
+        function saveToFirebase(path, inputId) {
+            const val = document.getElementById(inputId).value;
+            db.ref(path).set(val).then(() => alert("✅ تم التحديث بنجاح!"));
+        }
 
-    db.ref('comments').on('value', snap => {
-        let html = "";
-        snap.forEach(child => {
-            html += `<div class="comment-box"><b>${child.val().name}:</b> <p>${child.val().text}</p></div>`;
+        // جلب المشتركين
+        db.ref('requests').on('value', (snap) => {
+            let html = "";
+            snap.forEach(child => {
+                const user = child.val();
+                html += `
+                    <div style="padding:15px; border:1px solid #eee; border-radius:10px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <strong>👤 ${user.name}</strong><br>
+                            <small>📞 ${user.phone}</small>
+                        </div>
+                        <button onclick="deleteUser('${child.key}')" style="background:#ff5252; color:white; border:none; padding:8px 15px; border-radius:5px; cursor:pointer;">حذف</button>
+                    </div>`;
+            });
+            document.getElementById('usersList').innerHTML = html || "لا يوجد طلبات تفعيل حالياً.";
         });
-        document.getElementById('commentsList').innerHTML = html;
-    });
-</script>
+
+        function deleteUser(key) {
+            if(confirm("هل تريد حذف هذا الطلب؟")) db.ref('requests/' + key).remove();
+        }
+    </script>
 </body>
 </html>
 

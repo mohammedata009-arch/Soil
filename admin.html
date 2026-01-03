@@ -2,104 +2,93 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>لوحة التحكم | م. محمد طه عطا</title>
+    <title>غرفة التحكم | م. محمد طه</title>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <style>
-        :root { --primary: #1a237e; --accent: #ffd600; --bg: #f4f7f6; }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; background: var(--bg); }
-        .sidebar { width: 250px; background: var(--primary); color: white; min-height: 100vh; position: fixed; right: 0; box-shadow: -2px 0 10px rgba(0,0,0,0.1); }
-        .sidebar-header { padding: 30px 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: bold; font-size: 1.2rem; color: var(--accent); }
-        .nav-item { padding: 18px 25px; cursor: pointer; display: flex; align-items: center; gap: 15px; transition: 0.3s; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .nav-item:hover, .nav-item.active { background: rgba(255,255,255,0.1); color: var(--accent); }
-        .main-content { margin-right: 250px; padding: 40px; width: 100%; }
-        .admin-card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); display: none; animation: fadeIn 0.5s; }
-        .admin-card.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        textarea { width: 100%; height: 100px; padding: 15px; border-radius: 12px; border: 1px solid #ddd; margin: 15px 0; resize: none; font-family: inherit; }
-        .btn { padding: 12px 25px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-primary:hover { opacity: 0.9; transform: scale(1.02); }
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; display: flex; }
+        .sidebar { width: 280px; background: #1a237e; color: white; min-height: 100vh; padding: 20px; position: fixed; }
+        .main { margin-right: 280px; padding: 40px; width: 100%; }
+        .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 30px; }
+        input, textarea { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        button { background: #1a237e; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .delete-btn { background: #ff5252; padding: 5px 10px; font-size: 12px; }
     </style>
 </head>
 <body>
 
-    <div class="sidebar">
-        <div class="sidebar-header">🏗️ إدارة المنصة</div>
-        <div class="nav-item active" onclick="showTab('tab-ads', this)">📢 الإعلانات</div>
-        <div class="nav-item" onclick="showTab('tab-notify', this)">🔔 إشعار الدخول</div>
-        <div class="nav-item" onclick="showTab('tab-users', this)">👥 طلبات المشتركين</div>
+<div class="sidebar">
+    <h2>⚙️ لوحة التحكم</h2>
+    <p>مرحباً بشمهندس محمد</p>
+    <hr>
+    <p>من هنا يمكنك التحكم في كل شيء يظهر للمهندسين في الموقع الرئيسي.</p>
+</div>
+
+<div class="main">
+    <div class="card">
+        <h3>📢 نشر إعلان سريع</h3>
+        <input type="text" id="adVal" placeholder="اكتب نص الإعلان الذي سيظهر في الشريط العلوي">
+        <button onclick="update('current_ad', 'adVal')">تحديث الإعلان</button>
+        <button onclick="db.ref('current_ad').remove()" style="background:#666">إخفاء الإعلان</button>
     </div>
 
-    <div class="main-content">
-        <div id="tab-ads" class="admin-card active">
-            <h2>📢 إعلان الشريط الرئيسي</h2>
-            <p>سيظهر هذا النص في الصفحة الرئيسية أسفل الفيديو.</p>
-            <textarea id="adInput" placeholder="اكتب نص الإعلان هنا..."></textarea>
-            <button class="btn btn-primary" onclick="saveToFirebase('current_ad', 'adInput')">نشر الإعلان الآن 🚀</button>
-        </div>
-
-        <div id="tab-notify" class="admin-card">
-            <h2>🔔 إشعار واجهة الدخول</h2>
-            <p>سيظهر هذا التنبيه في اللوحة الجانبية لغير المسجلين.</p>
-            <textarea id="notifyInput" placeholder="اكتب تنبيه واجهة الدخول هنا..."></textarea>
-            <button class="btn btn-primary" onclick="saveToFirebase('entry_notifications', 'notifyInput')">تحديث التنبيه 🔔</button>
-        </div>
-
-        <div id="tab-users" class="admin-card">
-            <h2>👥 مراجعة طلبات الوصول</h2>
-            <div id="usersList" style="margin-top: 20px;">جاري جلب الطلبات...</div>
-        </div>
+    <div class="card">
+        <h3>🔗 إضافة أيقونة جديدة (صفحة/دورة/رابط)</h3>
+        <input type="text" id="lTitle" placeholder="عنوان الزر (مثال: كورس الإيتابس)">
+        <input type="text" id="lIcon" placeholder="إيموجي الزر (مثال: 💻 أو 🏗️)">
+        <input type="text" id="lUrl" placeholder="رابط الصفحة أو الرابط الخارجي">
+        <button onclick="addLink()">إضافة للموقع فوراً</button>
     </div>
 
-    <script>
-        // بياناتك الحقيقية التي استخرجتها من الصورة
-        const firebaseConfig = {
-            apiKey: "AIzaSyAQtlovkQYAanzfBpX5cePgcXffLau-k-M",
-            authDomain: "civil-engineering-platform.firebaseapp.com",
-            databaseURL: "https://civil-engineering-platform-default-rtdb.firebaseio.com", 
-            projectId: "civil-engineering-platform",
-            storageBucket: "civil-engineering-platform.firebasestorage.app",
-            messagingSenderId: "329809780930",
-            appId: "1:329809780930:web:410fd497bee2c8a13c9b5b"
-        };
+    <div class="card">
+        <h3>📝 تفعيل امتحان (رابط Google Form)</h3>
+        <input type="text" id="exUrl" placeholder="ضع رابط الامتحان هنا">
+        <button onclick="update('current_exam', 'exUrl')">نشر الامتحان</button>
+        <button onclick="db.ref('current_exam').remove()" style="background:#666">إغلاق الامتحان</button>
+    </div>
 
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
+    <div class="card">
+        <h3>👥 طلبات المشتركين الجدد</h3>
+        <div id="reqBox">جاري التحميل...</div>
+    </div>
+</div>
 
-        function showTab(id, el) {
-            document.querySelectorAll('.admin-card').forEach(c => c.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            el.classList.add('active');
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyAQtlovkQYAanzfBpX5cePgcXffLau-k-M",
+        authDomain: "civil-engineering-platform.firebaseapp.com",
+        databaseURL: "https://civil-engineering-platform-default-rtdb.firebaseio.com/",
+        projectId: "civil-engineering-platform",
+        storageBucket: "civil-engineering-platform.firebasestorage.app",
+        appId: "1:329809780930:web:410fd497bee2c8a13c9b5b"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    function update(path, id) {
+        db.ref(path).set(document.getElementById(id).value).then(() => alert("تم التحديث ✅"));
+    }
+
+    function addLink() {
+        const title = document.getElementById('lTitle').value;
+        const icon = document.getElementById('lIcon').value;
+        const url = document.getElementById('lUrl').value;
+        if(title && url) {
+            db.ref('links').push({ title, icon, url }).then(() => alert("تمت إضافة الأيقونة ✅"));
         }
+    }
 
-        function saveToFirebase(path, inputId) {
-            const val = document.getElementById(inputId).value;
-            db.ref(path).set(val).then(() => alert("✅ تم التحديث بنجاح!"));
-        }
-
-        // جلب المشتركين
-        db.ref('requests').on('value', (snap) => {
-            let html = "";
-            snap.forEach(child => {
-                const user = child.val();
-                html += `
-                    <div style="padding:15px; border:1px solid #eee; border-radius:10px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
-                        <div>
-                            <strong>👤 ${user.name}</strong><br>
-                            <small>📞 ${user.phone}</small>
-                        </div>
-                        <button onclick="deleteUser('${child.key}')" style="background:#ff5252; color:white; border:none; padding:8px 15px; border-radius:5px; cursor:pointer;">حذف</button>
-                    </div>`;
-            });
-            document.getElementById('usersList').innerHTML = html || "لا يوجد طلبات تفعيل حالياً.";
+    db.ref('requests').on('value', s => {
+        let html = "";
+        s.forEach(c => {
+            html += `<div style="padding:10px; border-bottom:1px solid #eee; display:flex; justify-content:space-between;">
+                <span><b>${c.val().name}</b> (${c.val().phone})</span>
+                <button class="delete-btn" onclick="db.ref('requests/${c.key}').remove()">حذف</button>
+            </div>`;
         });
-
-        function deleteUser(key) {
-            if(confirm("هل تريد حذف هذا الطلب؟")) db.ref('requests/' + key).remove();
-        }
-    </script>
+        document.getElementById('reqBox').innerHTML = html || "لا توجد طلبات جديدة.";
+    });
+</script>
 </body>
 </html>
 

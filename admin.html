@@ -11,8 +11,10 @@
         .main { margin-right: 280px; padding: 40px; width: calc(100% - 280px); }
         .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 30px; }
         input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
-        button { background: #1a237e; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold; }
-        .del-btn { background: #ff5252; padding: 5px 10px; border-radius: 5px; color: white; border: none; cursor: pointer; }
+        button { background: #1a237e; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .approve-btn { background: #2ecc71; margin-left: 5px; }
+        .del-btn { background: #ff5252; }
+        .user-item { border-bottom: 1px solid #eee; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
     </style>
 </head>
 <body>
@@ -21,35 +23,32 @@
     <h2>⚙️ لوحة التحكم</h2>
     <p>مرحباً بشمهندس محمد طه</p>
     <hr>
-    <p>تحكم في المنصة بالكامل من هنا.</p>
+    <p>إدارة المشتركين والمحتوى</p>
 </div>
 
 <div class="main">
     <div class="card">
-        <h3>📢 نشر إعلان جديد</h3>
-        <input type="text" id="adVal" placeholder="نص الإعلان العلوي">
-        <button onclick="updateData('current_ad', 'adVal')">نشر الإعلان 🚀</button>
-        <button onclick="db.ref('current_ad').remove()" style="background:#666">حذف الإعلان</button>
+        <h3>📢 الإعلان العلوي</h3>
+        <input type="text" id="adVal" placeholder="نص الإعلان">
+        <button onclick="updateData('current_ad', 'adVal')">تحديث 🚀</button>
     </div>
 
     <div class="card">
-        <h3>🔗 إضافة أيقونة/رابط جديد</h3>
+        <h3>🔗 إضافة أيقونة/رابط</h3>
         <input type="text" id="lTitle" placeholder="عنوان الزر">
-        <input type="text" id="lIcon" placeholder="إيموجي (مثل 🏗️ أو 📚)">
-        <input type="text" id="lUrl" placeholder="الرابط (رابط خارجي أو ملف .html)">
-        <button onclick="addLink()">إضافة الزر فوراً ✅</button>
+        <input type="text" id="lIcon" placeholder="إيموجي (مثلاً 🏗️)">
+        <input type="text" id="lUrl" placeholder="الرابط (مثلاً soil-edu.html)">
+        <button onclick="addLink()">إضافة ✅</button>
     </div>
 
     <div class="card">
-        <h3>📝 نشر امتحان (رابط Google Form)</h3>
-        <input type="text" id="exUrl" placeholder="رابط Google Form">
-        <button onclick="updateData('current_exam', 'exUrl')">نشر الامتحان 📑</button>
-        <button onclick="db.ref('current_exam').remove()" style="background:#666">إغلاق الامتحان</button>
-    </div>
-
-    <div class="card">
-        <h3>👥 طلبات المشتركين</h3>
+        <h3>👥 طلبات العضوية المعلقة</h3>
         <div id="reqBox">جاري التحميل...</div>
+    </div>
+
+    <div class="card" style="border-top: 5px solid #2ecc71;">
+        <h3>✅ المشتركون المعتمدون</h3>
+        <div id="approvedBox">جاري التحميل...</div>
     </div>
 </div>
 
@@ -66,7 +65,7 @@
     const db = firebase.database();
 
     function updateData(path, id) {
-        db.ref(path).set(document.getElementById(id).value).then(() => alert("✅ تم التحديث"));
+        db.ref(path).set(document.getElementById(id).value).then(() => alert("تم التحديث"));
     }
 
     function addLink() {
@@ -74,23 +73,43 @@
         const icon = document.getElementById('lIcon').value;
         const url = document.getElementById('lUrl').value;
         if(title && url) {
-            db.ref('links').push({ title, icon, url }).then(() => {
-                alert("✅ تمت الإضافة");
-                document.getElementById('lTitle').value = "";
-                document.getElementById('lUrl').value = "";
-            });
+            db.ref('links').push({ title, icon, url }).then(() => alert("تمت الإضافة"));
         }
     }
 
+    // عرض الطلبات المعلقة مع زر الموافقة
     db.ref('requests').on('value', s => {
         let html = "";
         s.forEach(c => {
-            html += `<div style="border-bottom:1px solid #eee; padding:10px; display:flex; justify-content:space-between;">
-                <span><b>${c.val().name}</b> (${c.val().phone})</span>
-                <button class="del-btn" onclick="db.ref('requests/${c.key}').remove()">حذف</button>
+            const u = c.val();
+            html += `<div class="user-item">
+                <span><b>${u.name}</b> (${u.phone})</span>
+                <div>
+                    <button class="approve-btn" onclick="approveUser('${c.key}','${u.name}','${u.phone}')">موافقة ✅</button>
+                    <button class="del-btn" onclick="db.ref('requests/${c.key}').remove()">حذف ❌</button>
+                </div>
             </div>`;
         });
-        document.getElementById('reqBox').innerHTML = html || "لا توجد طلبات.";
+        document.getElementById('reqBox').innerHTML = html || "لا توجد طلبات معلقة.";
+    });
+
+    function approveUser(id, name, phone) {
+        db.ref('approved_users/' + phone).set({ name, phone, status: 'active' }).then(() => {
+            db.ref('requests/' + id).remove();
+            alert("تم تفعيل عضوية: " + name);
+        });
+    }
+
+    // عرض المعتمدين مع خيار إلغاء التفعيل
+    db.ref('approved_users').on('value', s => {
+        let html = "";
+        s.forEach(c => {
+            html += `<div class="user-item">
+                <span>🟢 ${c.val().name}</span>
+                <button class="del-btn" onclick="db.ref('approved_users/${c.key}').remove()">إلغاء التفعيل</button>
+            </div>`;
+        });
+        document.getElementById('approvedBox').innerHTML = html || "لا يوجد مشتركين معتمدين.";
     });
 </script>
 </body>

@@ -1,165 +1,172 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوابة المهندس محمد طه | الموسوعة الهندسية</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        :root { --primary: #001d3d; --accent: #ffc300; --bg: #f0f2f5; --white: #ffffff; }
-        body { font-family: 'Tajawal', sans-serif; background: var(--bg); margin: 0; }
-
-        /* نظام الإشعارات الداخلي */
-        #notification-center {
-            position: fixed; top: 20px; left: 20px; z-index: 9999; width: 300px;
-        }
-        .toast {
-            background: var(--primary); color: white; padding: 15px; border-radius: 10px;
-            margin-bottom: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            border-right: 5px solid var(--accent); animation: slideLeft 0.5s ease;
-        }
-
-        /* Header */
-        .header { background: var(--primary); color: white; padding: 30px; text-align: center; border-bottom: 5px solid var(--accent); }
-        
-        /* Search Box */
-        .search-container {
-            max-width: 800px; margin: -25px auto 20px; position: relative; padding: 0 15px;
-        }
-        .search-box {
-            width: 100%; padding: 15px 50px 15px 20px; border-radius: 50px; border: none;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1); font-size: 1rem; font-family: inherit;
-        }
-        .search-icon { position: absolute; right: 35px; top: 15px; color: var(--primary); font-size: 1.2rem; }
-
-        /* Navigation Gate */
-        .nav-gate { display: flex; justify-content: center; background: white; padding: 10px; sticky; top: 0; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .nav-item { flex: 1; text-align: center; cursor: pointer; color: #555; padding: 10px; transition: 0.3s; }
-        .nav-item i { font-size: 1.5rem; display: block; }
-        .nav-item.active { color: var(--primary); font-weight: bold; }
-        .nav-item.active i { color: var(--accent); }
-
-        .container { max-width: 1100px; margin: 20px auto; padding: 0 15px; }
-        .section { display: none; animation: fadeIn 0.4s; }
-        .section.active { display: block; }
-
-        .card { background: white; border-radius: 15px; padding: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
-
-        @keyframes slideLeft { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>دليل ميكانيكا التربة | م. محمد طه</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+:root { --primary: #001d3d; --accent: #ffc300; --bg: #f8f9fa; --success: #28a745; }
+body { font-family: 'Tajawal', sans-serif; background: var(--bg); margin: 0; display: flex; flex-direction: column; min-height: 100vh; }
+.header { background: var(--primary); color: white; padding: 20px; text-align: center; border-bottom: 4px solid var(--accent); }
+.presentation-container { max-width: 800px; margin: auto; padding: 20px; width: 90%; flex: 1; }
+.step-card { background: white; border-radius: 20px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: none; animation: slideIn 0.5s ease; border-top: 8px solid var(--accent); }
+.step-card.active { display: block; }
+.step-indicator { text-align: center; margin-bottom: 20px; font-weight: bold; color: var(--primary); }
+h2 { color: var(--primary); border-bottom: 2px solid #eee; padding-bottom: 10px; }
+.content-text { line-height: 1.8; font-size: 1.1rem; color: #444; margin: 20px 0; }
+.btn-nav { background: var(--primary); color: white; border: none; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-family: inherit; font-weight: bold; transition: 0.3s; display: inline-flex; align-items: center; gap: 10px; margin: 5px; }
+.btn-nav:hover { background: #003566; transform: scale(1.05); }
+.btn-nav:disabled { background: #ccc; cursor: not-allowed; }
+.progress-bar { width: 100%; height: 12px; background: #ddd; border-radius: 10px; margin-top: 30px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--accent); width: 0%; transition: 0.5s; }
+.quiz { margin-top: 15px; }
+.quiz button { margin-top: 10px; }
+.completed { color: var(--success); font-weight: bold; margin-left: 5px; }
+@keyframes slideIn { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
+@media (max-width: 600px) { .step-card { padding: 20px; } .content-text { font-size: 1rem; } }
+</style>
 </head>
 <body>
 
-<div id="notification-center"></div>
-
 <header class="header">
-    <h1 style="margin:0;">الموسوعة الجيوتقنية العالمية</h1>
-    <div style="font-weight: 300; margin-top: 5px;">إدارة: م. محمد طه عطا المنان | 0999240574</div>
+    <h1 style="margin:0;">الرحلة التعليمية: أساسيات التربة</h1>
+    <div style="font-size: 0.9rem; margin-top: 5px; display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap;">
+        منصة البرامج التخصصية | إدارة م. محمد طه عطا المنان
+        <a href="https://wa.me/249999240574" target="_blank" style="background:#25D366; color:white; padding:5px 10px; border-radius:50px; font-weight:bold; text-decoration:none; display:flex; align-items:center; gap:5px;">
+            <i class="fab fa-whatsapp"></i> تواصل عبر واتساب
+        </a>
+    </div>
 </header>
 
-<div class="search-container">
-    <i class="fas fa-search search-icon"></i>
-    <input type="text" id="wikiSearch" class="search-box" placeholder="ابحث في الكود الأمريكي (ASTM) أو أنواع التربة..." onkeyup="liveSearch()">
-</div>
+<div class="presentation-container">
+    <div class="step-indicator" id="stepCounter">المرحلة 1 من 4</div>
 
-<nav class="nav-gate">
-    <div class="nav-item active" onclick="showSec('atlas', this)"><i class="fas fa-atlas"></i><span>الأطلس</span></div>
-    <div class="nav-item" onclick="showSec('failures', this)"><i class="fas fa-exclamation-triangle"></i><span>الانهيارات</span></div>
-    <div class="nav-item" onclick="showSec('astm', this)"><i class="fas fa-book-reader"></i><span>كتاب الكود</span></div>
-</nav>
-
-<div class="container">
-    <div id="search-results" class="section">
-        <div class="card">
-            <h3>🔍 نتائج البحث الموسوعي</h3>
-            <div id="results-list"></div>
+    <!-- المرحلة 1 -->
+    <div class="step-card active" id="step1">
+        <h2><i class="fas fa-cubes"></i> 1. مكونات التربة الثلاثية <span class="completed" id="check1"></span></h2>
+        <div class="content-text">
+            التربة مادة هندسية فريدة، لا تتكون من مادة واحدة بل من نظام ثلاثي الأطوار:
+            <ul>
+                <li><strong>الحبيبات الصلبة:</strong> الهيكل الذي يتحمل الأحمال.</li>
+                <li><strong>الماء:</strong> يملأ الفراغات ويؤثر على قوة القص.</li>
+                <li><strong>الهواء:</strong> يملأ الفراغات المتبقية في التربة الجافة.</li>
+            </ul>
+        </div>
+        <div class="quiz">
+            <strong>اختبر نفسك:</strong>
+            <p>أي من التالي ليس من مكونات التربة؟</p>
+            <button onclick="checkAnswer(1, 'خطأ')">الحبيبات الصلبة</button>
+            <button onclick="checkAnswer(1, 'صح')">الزجاج</button>
+            <button onclick="checkAnswer(1, 'خطأ')">الماء</button>
+        </div>
+        <div>
+            <button class="btn-nav" onclick="prevStep(1)" disabled><i class="fas fa-arrow-right"></i> السابق</button>
+            <button class="btn-nav" id="nextBtn1" onclick="nextStep(2)" disabled>التالي <i class="fas fa-arrow-left"></i></button>
         </div>
     </div>
 
-    <section id="atlas" class="section active">
-        <div class="card">
-            <h2><i class="fas fa-vial"></i> تصنيف التربة الميداني</h2>
-            <p>تعرف على التربة شكلياً من الواقع...</p>
-            <button onclick="pushNotify('تم تحديث بيانات التربة الطينية')" style="padding:10px; cursor:pointer;">تحديث البيانات</button>
+    <!-- المرحلة 2 -->
+    <div class="step-card" id="step2">
+        <h2><i class="fas fa-filter"></i> 2. التصنيف الهندسي (USCS) <span class="completed" id="check2"></span></h2>
+        <div class="content-text">
+            يتم تقسيم التربة بناءً على "قطر الحبيبات":
+            <ul>
+                <li><strong>التربة الخشنة:</strong> (حصى ورمل) يتم التعرف عليها بالتحليل المنخلي.</li>
+                <li><strong>التربة الناعمة:</strong> (طمي وطين) يتم التعرف عليها باختبارات اللدونة.</li>
+            </ul>
+            تذكر: التربة الخشنة تستمد قوتها من "الاحتكاك"، بينما الناعمة من "التماسك".
         </div>
-        
-    </section>
+        <div class="quiz">
+            <strong>اختبر نفسك:</strong>
+            <p>أي تربة تعتمد على التماسك كمصدر للقوة؟</p>
+            <button onclick="checkAnswer(2, 'صح')">الطمي والطين</button>
+            <button onclick="checkAnswer(2, 'خطأ')">الرمل والحصى</button>
+        </div>
+        <div>
+            <button class="btn-nav" onclick="prevStep(1)"><i class="fas fa-arrow-right"></i> السابق</button>
+            <button class="btn-nav" id="nextBtn2" onclick="nextStep(3)" disabled>التالي <i class="fas fa-arrow-left"></i></button>
+        </div>
+    </div>
 
-    <section id="astm" class="section">
-        <div class="card">
-            <h2><i class="fas fa-book"></i> كتاب الكود الأمريكي ASTM (مترجم)</h2>
-            <div id="astm-content">
-                <p><strong>ASTM D1586:</strong> اختبار الاختراق القياسي (SPT).</p>
-                <p><strong>ASTM D422:</strong> التحليل الحجمي لحبيبات التربة.</p>
-            </div>
+    <!-- المرحلة 3 -->
+    <div class="step-card" id="step3">
+        <h2><i class="fas fa-vial"></i> 3. حدود أتربرج (Atterberg) <span class="completed" id="check3"></span></h2>
+        <div class="content-text">
+            هذه الحدود تحدد حالة التربة الطينية مع تغير كمية الماء:
+            <ul>
+                <li><strong>حد السيولة (LL):</strong> النقطة التي تبدأ عندها التربة بالتصرف كالسائل.</li>
+                <li><strong>حد اللدونة (PL):</strong> النقطة التي يمكن فيها تشكيل التربة يدوياً.</li>
+            </ul>
+            المؤشر الأهم هو <strong>دليل اللدونة (PI = LL - PL)</strong>.
         </div>
-        
-    </section>
+        <div class="quiz">
+            <strong>اختبر نفسك:</strong>
+            <p>ما هو مؤشر اللدونة؟</p>
+            <button onclick="checkAnswer(3, 'صح')">PI = LL - PL</button>
+            <button onclick="checkAnswer(3, 'خطأ')">PI = PL + LL</button>
+        </div>
+        <div>
+            <button class="btn-nav" onclick="prevStep(2)"><i class="fas fa-arrow-right"></i> السابق</button>
+            <button class="btn-nav" id="nextBtn3" onclick="nextStep(4)" disabled>التالي <i class="fas fa-arrow-left"></i></button>
+        </div>
+    </div>
 
-    <section id="failures" class="section">
-        <div class="card" style="border-right: 5px solid red;">
-            <h2><i class="fas fa-biohazard"></i> الانهيارات والحلول</h2>
-            <p>انهيار القاعدة نتيجة القص العام (General Shear Failure).</p>
-            <button onclick="pushNotify('تحذير: تم اكتشاف خطر تميع تربة!')" style="color:red; cursor:pointer;">محاكاة خطر</button>
+    <!-- المرحلة 4 -->
+    <div class="step-card" id="step4">
+        <h2><i class="fas fa-exclamation-triangle"></i> 4. قدرة التحمل والانهيار <span class="completed" id="check4"></span></h2>
+        <div class="content-text">
+            الهدف النهائي للمهندس هو منع الانهيار. يحدث الانهيار عندما يتجاوز إجهاد القص مقاومة التربة.
+            <br><br>
+            <strong>المعادلة الذهبية:</strong> τ = c + σ tan(φ)
+            <br>
+            حيث (c) هو التماسك و (φ) هي زاوية الاحتكاك.
         </div>
-        
-    </section>
+        <div class="quiz">
+            <strong>اختبر نفسك:</strong>
+            <p>ماذا يمثل φ في المعادلة؟</p>
+            <button onclick="checkAnswer(4, 'صح')">زاوية الاحتكاك</button>
+            <button onclick="checkAnswer(4, 'خطأ')">التماسك</button>
+        </div>
+        <div>
+            <button class="btn-nav" onclick="prevStep(3)"><i class="fas fa-arrow-right"></i> السابق</button>
+            <button class="btn-nav" onclick="restart()"><i class="fas fa-redo"></i> إعادة الرحلة</button>
+        </div>
+    </div>
+
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
 </div>
 
 <script>
-    // نظام الإشعارات الداخلي
-    function pushNotify(msg) {
-        const center = document.getElementById('notification-center');
-        const toast = document.createElement('div');
-        toast.className = 'toast';
-        toast.innerHTML = `<i class="fas fa-bell"></i> ${msg}`;
-        center.appendChild(toast);
-        setTimeout(() => toast.remove(), 4000);
+let totalSteps = 4;
+function nextStep(step) {
+    document.querySelectorAll('.step-card').forEach(card => card.classList.remove('active'));
+    document.getElementById('step' + step).classList.add('active');
+    document.getElementById('stepCounter').innerText = "المرحلة " + step + " من " + totalSteps;
+    document.getElementById('progressFill').style.width = (step / totalSteps) * 100 + "%";
+}
+function prevStep(step) {
+    nextStep(step);
+}
+function checkAnswer(step, answer) {
+    const nextBtn = document.getElementById('nextBtn' + step);
+    const checkMark = document.getElementById('check' + step);
+    if(answer === 'صح') {
+        alert("إجابة صحيحة! ✅");
+        nextBtn.disabled = false;
+        checkMark.innerHTML = '✅';
+    } else {
+        alert("إجابة خاطئة! حاول مرة أخرى ❌");
     }
-
-    // قاعدة بيانات البحث الموسوعي
-    const wikiDB = [
-        {title: "ASTM D1556", desc: "اختبار المخروط الرملي لتحديد الكثافة الحقلية."},
-        {title: "التربة الانتفاخية", desc: "تربة تزداد حجماً عند امتصاص الماء وتسبب تشقق القواعد."},
-        {title: "هبوط التصلد", desc: "خروج الماء من مسامات الطين تحت الأحمال المستمرة."},
-        {title: "الحقن الإسمنتي", desc: "حل هندسي لتقوية الفجوات في التربة الصخرية."}
-    ];
-
-    function liveSearch() {
-        const query = document.getElementById('wikiSearch').value.toLowerCase();
-        const resultsArea = document.getElementById('results-list');
-        const searchSec = document.getElementById('search-results');
-        
-        if(query.length < 2) { searchSec.style.display = 'none'; return; }
-        
-        searchSec.style.display = 'block';
-        resultsArea.innerHTML = "";
-        
-        const filtered = wikiDB.filter(item => item.title.includes(query) || item.desc.includes(query));
-        
-        if(filtered.length > 0) {
-            filtered.forEach(res => {
-                resultsArea.innerHTML += `<div style="border-bottom:1px solid #eee; padding:10px;">
-                    <strong>${res.title}</strong><br><small>${res.desc}</small>
-                </div>`;
-            });
-        } else {
-            resultsArea.innerHTML = "لا توجد نتائج مطابقة في الموسوعة.";
-        }
-    }
-
-    function showSec(id, el) {
-        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        el.classList.add('active');
-        document.getElementById('search-results').style.display = 'none';
-    }
-
-    window.onload = () => pushNotify("أهلاً بك م. محمد طه في المنصة المحدثة");
+}
+function restart() {
+    location.reload();
+}
+window.onload = () => { document.getElementById('progressFill').style.width = "25%"; };
 </script>
+
 </body>
 </html>
-

@@ -3,214 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة البرامج التخصصية - إدارة محمد طه</title>
+    <title>منصة البرامج التخصصية - هندسة التربة الإنشائية</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #1a237e; /* أزرق ملكي */
-            --accent: #c6a700;  /* ذهبي */
-            --bg: #f8f9fa;
-            --text: #2c3e50;
+            --primary: #1a237e; /* Navy Blue */
+            --accent: #ffc107;  /* Gold/Amber */
+            --bg: #f4f6f9;
+            --white: #ffffff;
         }
 
-        body {
-            font-family: 'Tajawal', sans-serif;
-            background-color: var(--bg);
-            margin: 0;
-            color: var(--text);
-        }
+        body { font-family: 'Tajawal', sans-serif; background-color: var(--bg); margin: 0; }
 
-        /* الهيدر الاحترافي */
-        .main-header {
+        .header {
             background: linear-gradient(135deg, var(--primary) 0%, #0d47a1 100%);
-            color: white;
-            padding: 40px 20px;
+            color: var(--white);
+            padding: 35px 20px;
             text-align: center;
             border-bottom: 5px solid var(--accent);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
-        .main-header h1 {
-            margin: 0;
-            font-size: 2.2rem;
-            letter-spacing: 1px;
-        }
-
-        .manager-name {
+        .manager-info {
             display: inline-block;
             margin-top: 10px;
             padding: 5px 20px;
             background: rgba(255,255,255,0.1);
-            border-radius: 50px;
-            font-size: 1rem;
             border: 1px solid var(--accent);
+            border-radius: 50px;
+            font-size: 0.9rem;
         }
 
-        .container {
-            max-width: 1100px;
-            margin: -30px auto 40px;
-            background: white;
+        .main-container {
+            max-width: 1150px;
+            margin: -25px auto 40px;
+            background: var(--white);
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            overflow: hidden;
             display: grid;
-            grid-template-columns: 1fr 350px;
-        }
-
-        @media (max-width: 900px) {
-            .container { grid-template-columns: 1fr; margin: 10px; }
-        }
-
-        /* التبويبات */
-        .tabs-bar {
-            grid-column: 1 / -1;
-            background: #f1f1f1;
-            display: flex;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .tab-item {
-            padding: 18px 30px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
-            border-bottom: 3px solid transparent;
-        }
-
-        .tab-item.active {
-            background: white;
-            color: var(--primary);
-            border-bottom-color: var(--primary);
-        }
-
-        /* المحتوى */
-        .content-section { padding: 30px; }
-        
-        .score-panel {
-            background: var(--primary);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            display: inline-block;
-            margin-bottom: 20px;
-        }
-
-        .info-toggle {
-            background: var(--accent);
-            color: #000;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            width: 100%;
-            cursor: pointer;
-            font-weight: bold;
-            margin-bottom: 20px;
-            font-family: inherit;
-        }
-
-        .info-content {
-            display: none;
-            background: #fff9c4;
-            padding: 20px;
-            border-radius: 10px;
-            border-right: 5px solid var(--accent);
-            margin-bottom: 20px;
-            line-height: 1.7;
-            animation: slideIn 0.4s ease-out;
-        }
-
-        /* منطقة الفيديو */
-        .video-side {
-            background: #212121;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .video-box {
-            width: 100%;
-            height: 220px;
-            background: #000;
-            border-radius: 10px;
+            grid-template-columns: 1fr 400px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
             overflow: hidden;
-            border: 2px solid #444;
         }
 
+        @media (max-width: 900px) { .main-container { grid-template-columns: 1fr; margin: 10px; } }
+
+        .tabs-nav { grid-column: 1 / -1; background: #eeeeee; display: flex; border-bottom: 1px solid #ddd; }
+        .tab-btn { padding: 20px 25px; cursor: pointer; font-weight: bold; border-bottom: 4px solid transparent; transition: 0.3s; }
+        .tab-btn.active { background: var(--white); color: var(--primary); border-bottom-color: var(--primary); }
+
+        .content-area { padding: 30px; }
+        .info-panel { display: none; background: #fff9c4; padding: 20px; border-radius: 10px; border-right: 5px solid var(--accent); margin-bottom: 20px; line-height: 1.8; animation: slideDown 0.4s; }
+        
+        .video-box { background: #000; height: 250px; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
         iframe { width: 100%; height: 100%; border: none; }
 
-        .option-card {
-            background: #fff;
-            border: 1px solid #eee;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-        }
+        .option-btn { display: block; width: 100%; padding: 15px; margin: 10px 0; border: 1px solid #ddd; border-radius: 10px; cursor: pointer; background: #fff; font-family: inherit; text-align: right; transition: 0.2s; }
+        .option-btn:hover { border-color: var(--primary); background: #f0f3ff; }
 
-        .option-card:hover {
-            transform: scale(1.02);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            border-color: var(--primary);
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <header class="main-header">
-        <h1>منصة البرامج التخصصية</h1>
-        <div class="manager-name">إدارة: محمد طه عطا المنان</div>
+    <header class="header">
+        <div style="font-size: 2rem; font-weight: 700;">منصة البرامج التخصصية</div>
+        <div class="manager-info">إدارة: محمد طه عطا المنان</div>
     </header>
 
-    <div class="container">
-        <div class="tabs-bar" id="tabs"></div>
+    <div class="main-container">
+        <div class="tabs-nav" id="tabs"></div>
 
-        <div class="content-section">
-            <div class="score-panel">رصيد المعرفة: <span id="score">0</span> نقطة</div>
-            
-            <button class="info-toggle" onclick="toggleInfo()">📘 المحتوى العلمي (إظهار/إخفاء)</button>
-            <div id="info-box" class="info-content"></div>
+        <div class="content-area">
+            <div style="margin-bottom: 15px; font-weight: bold; color: var(--primary);">⭐ نقاط الخبرة الإنشائية: <span id="score">0</span></div>
+            <button onclick="toggleInfo()" style="background: var(--primary); color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; cursor: pointer; font-family: inherit; font-weight: bold; margin-bottom: 20px;">📂 الدليل الهندسي للموقع (إظهار/إخفاء)</button>
+            <div id="info-box" class="info-panel"></div>
 
-            <h3 id="question-title">جاري تحميل السؤال...</h3>
-            <div id="options-list"></div>
+            <h3 id="question-title"></h3>
+            <div id="options-container"></div>
         </div>
 
-        <div class="video-side">
+        <div style="background: #263238; padding: 25px;">
             <div class="video-box" id="video-frame"></div>
-            <p style="color:#aaa; text-align:center; font-size: 0.8rem; margin-top: 15px;">الشرح المرئي التخصصي</p>
+            <p style="color: #cfd8dc; text-align: center; margin-top: 15px; font-size: 0.85rem;">📽️ العرض التخصصي: ميكانيكا التربة والأساسات</p>
         </div>
     </div>
 
-    <audio id="click-sound" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3"></audio>
+    <audio id="success-sfx" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3"></audio>
 
 <script>
-    const db = {
-        "أساسيات التربة": {
-            info: "تعتبر التربة هي الركيزة الأساسية للبرامج الزراعية التخصصية، حيث تتكون من طبقات تسمى (آفاق التربة). الطبقة السطحية هي الأغنى بالمواد العضوية.",
-            video: "kIOnuWp_S_4",
+    const engineeringDB = {
+        "تحليل الموقع": {
+            info: "قبل البدء بالإنشاء، يتم عمل 'جسات' لاستكشاف طبقات التربة وتحديد منسوب المياه الجوفية وقدرة تحمل التربة (Bearing Capacity).",
+            video: "2p7zE_U8Qmo", // فيديو عن ميكانيكا التربة
             questions: [
-                {q: "ماذا تسمى طبقات التربة علمياً؟", a: ["آفاق التربة", "جدران التربة", "غلاف التربة"], c: 0},
-                {q: "أي طبقة هي الأغنى بالمواد العضوية؟", a: ["السطحية", "الصخرية", "الوسطى"], c: 0}
+                {q: "ما الهدف الأساسي من عمل الجسات التربية؟", a: ["تحديد قدرة تحمل التربة", "معرفة لون التربة فقط", "تجميل الموقع"], c: 0},
+                {q: "أين يتم اختبار عينات التربة عادةً؟", a: ["في الموقع فقط", "في المختبرات الجيوتقنية", "لا تحتاج اختبار"], c: 1}
             ]
         },
-        "إدارة الموارد": {
-            info: "الإدارة التخصصية للموارد تتطلب فهم نفاذية التربة لتحديد كميات الري المناسبة وتجنب هدر المياه.",
-            video: "m6E0lO_o8bE",
+        "الأساسات الضحلة": {
+            info: "تُستخدم عندما تكون التربة السطحية قوية كفاية لحمل المبنى، وتشمل القواعد المنفصلة، المستمرة، والحصيرة (Raft Foundation).",
+            video: "k2P8K4N5O3U", 
             questions: [
-                {q: "لماذا ندرس نفاذية التربة؟", a: ["لتحديد نظام الري", "لمعرفة لون التربة", "لزيادة الملوحة"], c: 0}
+                {q: "متى نستخدم لبشة (حصيرة) خرسانية؟", a: ["عند ضعف التربة السطحية وتداخل القواعد", "في التربة الصخرية الصلبة", "للمباني الصغيرة جداً"], c: 0}
+            ]
+        },
+        "الأساسات العميقة": {
+            info: "عندما تكون التربة السطحية ضعيفة، نلجأ للخوازيق (Piles) لنقل الأحمال إلى طبقات تربة أعمق وأقوى عبر الاحتكاك أو الارتكاز.",
+            video: "p3_8hS-Lre8",
+            questions: [
+                {q: "ما هي وظيفة الخوازيق (الأوتاد) في الهندسة؟", a: ["نقل الأحمال لطبقات عميقة قوية", "توفير الأسمنت", "زيادة وزن المبنى"], c: 0}
             ]
         }
     };
 
-    let currentCat = Object.keys(db)[0];
+    let activeTab = Object.keys(engineeringDB)[0];
     let score = 0;
 
     function toggleInfo() {
@@ -219,50 +124,50 @@
     }
 
     function init() {
-        const bar = document.getElementById('tabs');
-        Object.keys(db).forEach(cat => {
-            const d = document.createElement('div');
-            d.className = 'tab-item';
-            d.innerText = cat;
-            d.onclick = () => {
-                document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
-                d.classList.add('active');
-                currentCat = cat;
+        const nav = document.getElementById('tabs');
+        Object.keys(engineeringDB).forEach(cat => {
+            const btn = document.createElement('div');
+            btn.className = 'tab-btn';
+            btn.innerText = cat;
+            btn.onclick = () => {
+                document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+                btn.classList.add('active');
+                activeTab = cat;
                 document.getElementById('info-box').style.display = 'none';
-                load();
+                render();
             };
-            bar.appendChild(d);
+            nav.appendChild(btn);
         });
-        bar.firstChild.classList.add('active');
-        load();
+        nav.firstChild.classList.add('active');
+        render();
     }
 
-    function load() {
-        const data = db[currentCat];
+    function render() {
+        const data = engineeringDB[activeTab];
         document.getElementById('info-box').innerText = data.info;
         document.getElementById('video-frame').innerHTML = `<iframe src="https://www.youtube.com/embed/${data.video}"></iframe>`;
         
         const q = data.questions[Math.floor(Math.random() * data.questions.length)];
-        document.getElementById('question-title').innerText = q.q;
+        document.getElementById('question-title').innerText = `❓ ${q.q}`;
         
-        const list = document.getElementById('options-list');
-        list.innerHTML = '';
+        const container = document.getElementById('options-container');
+        container.innerHTML = '';
         q.a.forEach((opt, i) => {
-            const div = document.createElement('div');
-            div.className = 'option-card';
-            div.innerText = opt;
-            div.onclick = () => {
+            const b = document.createElement('button');
+            b.className = 'option-btn';
+            b.innerText = opt;
+            b.onclick = () => {
                 if(i === q.c) {
-                    document.getElementById('click-sound').play();
-                    score += 20;
+                    document.getElementById('success-sfx').play();
+                    score += 25;
                     document.getElementById('score').innerText = score;
-                    div.style.background = "#c8e6c9";
-                    setTimeout(load, 800);
+                    b.style.background = "#c8e6c9";
+                    setTimeout(render, 800);
                 } else {
-                    div.style.background = "#ffccbc";
+                    b.style.background = "#ffccbc";
                 }
             };
-            list.appendChild(div);
+            container.appendChild(b);
         });
     }
 

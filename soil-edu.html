@@ -3,132 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة ميكانيكا التربة | إدارة محمد طه</title>
+    <title>بوابة المهندس محمد طه | الموسوعة الهندسية</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --primary: #001d3d; --accent: #ffc300; --bg: #f8f9fa; --white: #ffffff; }
-        body { font-family: 'Tajawal', sans-serif; background: var(--bg); margin: 0; scroll-behavior: smooth; }
-        
-        /* Header & WhatsApp */
-        .header { background: var(--primary); color: var(--white); padding: 40px 20px; text-align: center; border-bottom: 5px solid var(--accent); position: relative; }
-        .whatsapp-link { 
-            display: inline-flex; align-items: center; gap: 10px; background: #25d366; color: white; 
-            padding: 10px 20px; border-radius: 50px; text-decoration: none; font-weight: bold;
-            margin-top: 15px; transition: 0.3s; animation: pulse 2s infinite;
+        :root { --primary: #001d3d; --accent: #ffc300; --bg: #f0f2f5; --white: #ffffff; }
+        body { font-family: 'Tajawal', sans-serif; background: var(--bg); margin: 0; }
+
+        /* نظام الإشعارات الداخلي */
+        #notification-center {
+            position: fixed; top: 20px; left: 20px; z-index: 9999; width: 300px;
         }
-        .whatsapp-link:hover { background: #128c7e; transform: scale(1.05); }
+        .toast {
+            background: var(--primary); color: white; padding: 15px; border-radius: 10px;
+            margin-bottom: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border-right: 5px solid var(--accent); animation: slideLeft 0.5s ease;
+        }
+
+        /* Header */
+        .header { background: var(--primary); color: white; padding: 30px; text-align: center; border-bottom: 5px solid var(--accent); }
+        
+        /* Search Box */
+        .search-container {
+            max-width: 800px; margin: -25px auto 20px; position: relative; padding: 0 15px;
+        }
+        .search-box {
+            width: 100%; padding: 15px 50px 15px 20px; border-radius: 50px; border: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); font-size: 1rem; font-family: inherit;
+        }
+        .search-icon { position: absolute; right: 35px; top: 15px; color: var(--primary); font-size: 1.2rem; }
 
         /* Navigation Gate */
-        .nav-gate { display: flex; justify-content: center; background: white; padding: 15px; sticky; top: 0; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.1); gap: 5px; }
-        .nav-item { flex: 1; text-align: center; cursor: pointer; color: #555; transition: 0.3s; padding: 10px; border-radius: 8px; }
-        .nav-item i { font-size: 1.5rem; display: block; margin-bottom: 5px; }
-        .nav-item.active { color: var(--primary); background: #f0f4f8; }
+        .nav-gate { display: flex; justify-content: center; background: white; padding: 10px; sticky; top: 0; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .nav-item { flex: 1; text-align: center; cursor: pointer; color: #555; padding: 10px; transition: 0.3s; }
+        .nav-item i { font-size: 1.5rem; display: block; }
+        .nav-item.active { color: var(--primary); font-weight: bold; }
         .nav-item.active i { color: var(--accent); }
 
-        .container { max-width: 1200px; margin: 30px auto; padding: 0 15px; }
-        .gate-section { display: none; animation: fadeIn 0.5s; }
-        .gate-section.active { display: block; }
+        .container { max-width: 1100px; margin: 20px auto; padding: 0 15px; }
+        .section { display: none; animation: fadeIn 0.4s; }
+        .section.active { display: block; }
 
-        /* Atlas Cards */
-        .atlas-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .soil-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); position: relative; border-bottom: 4px solid var(--primary); }
-        .soil-img { height: 180px; background-size: cover; background-position: center; border-bottom: 1px solid #eee; position: relative; }
-        
-        .quiz-shortcut { 
-            position: absolute; bottom: 10px; left: 10px; background: var(--accent); color: black; 
-            width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; 
-            justify-content: center; cursor: pointer; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
+        .card { background: white; border-radius: 15px; padding: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
 
-        .soil-info { padding: 20px; }
-        .soil-info h3 { margin: 0 0 10px 0; color: var(--primary); }
-
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); } 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); } }
+        @keyframes slideLeft { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
+<div id="notification-center"></div>
+
 <header class="header">
-    <h1 style="margin:0;">بوابة ميكانيكا التربة والأساسات</h1>
-    <div style="font-weight: 300; margin-top: 5px;">تحت إشراف: محمد طه عطا المنان</div>
-    
-    <a href="https://wa.me/249999240574" class="whatsapp-link" target="_blank">
-        <i class="fab fa-whatsapp"></i> تواصل مع المهندس مباشرة
-    </a>
+    <h1 style="margin:0;">الموسوعة الجيوتقنية العالمية</h1>
+    <div style="font-weight: 300; margin-top: 5px;">إدارة: م. محمد طه عطا المنان | 0999240574</div>
 </header>
 
+<div class="search-container">
+    <i class="fas fa-search search-icon"></i>
+    <input type="text" id="wikiSearch" class="search-box" placeholder="ابحث في الكود الأمريكي (ASTM) أو أنواع التربة..." onkeyup="liveSearch()">
+</div>
+
 <nav class="nav-gate">
-    <div class="nav-item active" onclick="switchGate('atlas', this)"><i class="fas fa-images"></i><span>أطلس التربة</span></div>
-    <div class="nav-item" onclick="switchGate('theory', this)"><i class="fas fa-book"></i><span>المفاهيم</span></div>
-    <div class="nav-item" onclick="switchGate('test', this)"><i class="fas fa-vial"></i><span>الاختبارات</span></div>
+    <div class="nav-item active" onclick="showSec('atlas', this)"><i class="fas fa-atlas"></i><span>الأطلس</span></div>
+    <div class="nav-item" onclick="showSec('failures', this)"><i class="fas fa-exclamation-triangle"></i><span>الانهيارات</span></div>
+    <div class="nav-item" onclick="showSec('astm', this)"><i class="fas fa-book-reader"></i><span>كتاب الكود</span></div>
 </nav>
 
 <div class="container">
-    <section id="atlas" class="gate-section active">
-        <h2 style="text-align: center; color: var(--primary);">🔍 التعرف البصري على أنواع التربة</h2>
-        <div class="atlas-grid">
-            
-            <div class="soil-card">
-                <div class="soil-img" style="background-color: #795548;">
-                    <div class="quiz-shortcut" onclick="alert('سؤال: لماذا يهبط الطين ببطء؟\nالإجابة: بسبب نفاذيته المنخفضة جداً.')">؟</div>
-                </div>
-                <div class="soil-info">
-                    <h3>التربة الطينية (Clay)</h3>
-                    <p>من الواقع: تظهر ككتل متماسكة عند الجفاف، وتصبح لدنة جداً عند امتصاص الماء.</p>
-                </div>
-            </div>
+    <div id="search-results" class="section">
+        <div class="card">
+            <h3>🔍 نتائج البحث الموسوعي</h3>
+            <div id="results-list"></div>
+        </div>
+    </div>
 
-            <div class="soil-card">
-                <div class="soil-img" style="background-color: #ffca28;">
-                    <div class="quiz-shortcut" onclick="alert('سؤال: متى ينهار الرمل فجأة؟\nالإجابة: عند ظاهرة التميع أثناء الزلازل.')">؟</div>
-                </div>
-                <div class="soil-info">
-                    <h3>التربة الرملية (Sand)</h3>
-                    <p>من الواقع: تظهر كحبيبات منفصلة. لا تحمل الأحمال إلا إذا كانت محصورة (Confined).</p>
-                </div>
-            </div>
-
-            <div class="soil-card">
-                <div class="soil-img" style="background-color: #9e9e9e;">
-                    <div class="quiz-shortcut" onclick="alert('سؤال: هل الحصى جيد للتأسيس؟\nالإجابة: نعم، هو الأفضل لعدم قابليته للانضغاط.')">؟</div>
-                </div>
-                <div class="soil-info">
-                    <h3>الحصى والجلمود (Gravel)</h3>
-                    <p>من الواقع: صخور مكسرة بأحجام مختلفة. نفاذيتها للماء عالية جداً وسريعة.</p>
-                </div>
-            </div>
-
+    <section id="atlas" class="section active">
+        <div class="card">
+            <h2><i class="fas fa-vial"></i> تصنيف التربة الميداني</h2>
+            <p>تعرف على التربة شكلياً من الواقع...</p>
+            <button onclick="pushNotify('تم تحديث بيانات التربة الطينية')" style="padding:10px; cursor:pointer;">تحديث البيانات</button>
         </div>
         
     </section>
 
-    <section id="theory" class="gate-section">
-        <div style="background: white; padding: 30px; border-radius: 15px;">
-            <h2>المفاهيم الإنشائية العملية</h2>
-            <p>هنا يتم عرض الجداول والمفاهيم التي تم برمجتها سابقاً...</p>
+    <section id="astm" class="section">
+        <div class="card">
+            <h2><i class="fas fa-book"></i> كتاب الكود الأمريكي ASTM (مترجم)</h2>
+            <div id="astm-content">
+                <p><strong>ASTM D1586:</strong> اختبار الاختراق القياسي (SPT).</p>
+                <p><strong>ASTM D422:</strong> التحليل الحجمي لحبيبات التربة.</p>
+            </div>
         </div>
         
     </section>
 
-    <section id="test" class="gate-section">
-        <div style="background: white; padding: 30px; border-radius: 15px;">
-            <h2>بوابة التقييم المتجددة</h2>
-            <p>الاختبارات تعمل بنظام العشوائية الذكية...</p>
+    <section id="failures" class="section">
+        <div class="card" style="border-right: 5px solid red;">
+            <h2><i class="fas fa-biohazard"></i> الانهيارات والحلول</h2>
+            <p>انهيار القاعدة نتيجة القص العام (General Shear Failure).</p>
+            <button onclick="pushNotify('تحذير: تم اكتشاف خطر تميع تربة!')" style="color:red; cursor:pointer;">محاكاة خطر</button>
         </div>
+        
     </section>
 </div>
 
 <script>
-    function switchGate(id, el) {
-        document.querySelectorAll('.gate-section').forEach(s => s.classList.remove('active'));
-        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    // نظام الإشعارات الداخلي
+    function pushNotify(msg) {
+        const center = document.getElementById('notification-center');
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.innerHTML = `<i class="fas fa-bell"></i> ${msg}`;
+        center.appendChild(toast);
+        setTimeout(() => toast.remove(), 4000);
+    }
+
+    // قاعدة بيانات البحث الموسوعي
+    const wikiDB = [
+        {title: "ASTM D1556", desc: "اختبار المخروط الرملي لتحديد الكثافة الحقلية."},
+        {title: "التربة الانتفاخية", desc: "تربة تزداد حجماً عند امتصاص الماء وتسبب تشقق القواعد."},
+        {title: "هبوط التصلد", desc: "خروج الماء من مسامات الطين تحت الأحمال المستمرة."},
+        {title: "الحقن الإسمنتي", desc: "حل هندسي لتقوية الفجوات في التربة الصخرية."}
+    ];
+
+    function liveSearch() {
+        const query = document.getElementById('wikiSearch').value.toLowerCase();
+        const resultsArea = document.getElementById('results-list');
+        const searchSec = document.getElementById('search-results');
+        
+        if(query.length < 2) { searchSec.style.display = 'none'; return; }
+        
+        searchSec.style.display = 'block';
+        resultsArea.innerHTML = "";
+        
+        const filtered = wikiDB.filter(item => item.title.includes(query) || item.desc.includes(query));
+        
+        if(filtered.length > 0) {
+            filtered.forEach(res => {
+                resultsArea.innerHTML += `<div style="border-bottom:1px solid #eee; padding:10px;">
+                    <strong>${res.title}</strong><br><small>${res.desc}</small>
+                </div>`;
+            });
+        } else {
+            resultsArea.innerHTML = "لا توجد نتائج مطابقة في الموسوعة.";
+        }
+    }
+
+    function showSec(id, el) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         el.classList.add('active');
+        document.getElementById('search-results').style.display = 'none';
     }
-</script>
 
+    window.onload = () => pushNotify("أهلاً بك م. محمد طه في المنصة المحدثة");
+</script>
 </body>
 </html>
 

@@ -3,29 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>دليل ميكانيكا التربة | م. محمد طه</title>
+<title>دليل ميكانيكا التربة | منصة البرامج التخصصية</title>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <style>
-:root { --primary: #001d3d; --accent: #ffc300; --bg: #f8f9fa; --success: #28a745; }
+:root { --primary: #001d3d; --accent: #ffc300; --bg: #f8f9fa; --success: #28a745; --info: #007bff; }
 body { font-family: 'Tajawal', sans-serif; background: var(--bg); margin: 0; display: flex; flex-direction: column; min-height: 100vh; }
 .header { background: var(--primary); color: white; padding: 20px; text-align: center; border-bottom: 4px solid var(--accent); }
 .presentation-container { max-width: 800px; margin: auto; padding: 20px; width: 90%; flex: 1; }
-.step-card { background: white; border-radius: 20px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: none; animation: slideIn 0.5s ease; border-top: 8px solid var(--accent); }
+.step-card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: none; animation: slideIn 0.5s ease; border-top: 8px solid var(--accent); }
 .step-card.active { display: block; }
-.step-indicator { text-align: center; margin-bottom: 20px; font-weight: bold; color: var(--primary); }
-h2 { color: var(--primary); border-bottom: 2px solid #eee; padding-bottom: 10px; }
-.content-text { line-height: 1.8; font-size: 1.1rem; color: #444; margin: 20px 0; }
-.btn-nav { background: var(--primary); color: white; border: none; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-family: inherit; font-weight: bold; transition: 0.3s; display: inline-flex; align-items: center; gap: 10px; margin: 5px; }
-.btn-nav:hover { background: #003566; transform: scale(1.05); }
-.btn-nav:disabled { background: #ccc; cursor: not-allowed; }
-.progress-bar { width: 100%; height: 12px; background: #ddd; border-radius: 10px; margin-top: 30px; overflow: hidden; }
-.progress-fill { height: 100%; background: var(--accent); width: 0%; transition: 0.5s; }
+.step-indicator { text-align: center; margin-bottom: 10px; font-weight: bold; color: var(--primary); }
+h2 { color: var(--primary); border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 15px; }
+.summary { background: var(--info); color: white; padding: 10px 15px; border-radius: 10px; font-weight: bold; margin-bottom: 15px; }
+.content-text { line-height: 1.8; font-size: 1.1rem; color: #444; margin: 15px 0; display: none; }
 .quiz { margin-top: 15px; }
-.quiz button { margin-top: 10px; }
+.quiz button { margin-top: 10px; padding: 8px 15px; border-radius: 50px; border: none; cursor: pointer; background: var(--primary); color: white; font-weight: bold; transition: 0.3s; }
+.quiz button:hover { background: #003566; transform: scale(1.05); }
+.btn-nav { background: var(--accent); color: var(--primary); border: none; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-family: inherit; font-weight: bold; transition: 0.3s; display: inline-flex; align-items: center; gap: 10px; margin: 5px; }
+.btn-nav:hover { background: #e0b300; transform: scale(1.05); }
+.btn-nav:disabled { background: #ccc; cursor: not-allowed; }
+.progress-bar { width: 100%; height: 12px; background: #ddd; border-radius: 10px; margin-top: 20px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--accent); width: 0%; transition: 0.5s; }
 .completed { color: var(--success); font-weight: bold; margin-left: 5px; }
 @keyframes slideIn { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
-@media (max-width: 600px) { .step-card { padding: 20px; } .content-text { font-size: 1rem; } }
+@media (max-width: 600px) { .step-card { padding: 15px; } .content-text { font-size: 1rem; } }
 </style>
 </head>
 <body>
@@ -46,20 +48,22 @@ h2 { color: var(--primary); border-bottom: 2px solid #eee; padding-bottom: 10px;
     <!-- المرحلة 1 -->
     <div class="step-card active" id="step1">
         <h2><i class="fas fa-cubes"></i> 1. مكونات التربة الثلاثية <span class="completed" id="check1"></span></h2>
-        <div class="content-text">
-            التربة مادة هندسية فريدة، لا تتكون من مادة واحدة بل من نظام ثلاثي الأطوار:
+        <div class="summary">ملخص المهمة: تعرف على المكونات الثلاثة للتربة وكيف تؤثر على خصائصها.</div>
+        <div class="quiz">
+            <strong>اختبر نفسك:</strong>
+            <p>أي من التالي ليس من مكونات التربة؟</p>
+            <button onclick="checkAnswer(1,'خطأ')">الحبيبات الصلبة</button>
+            <button onclick="checkAnswer(1,'صح')">الزجاج</button>
+            <button onclick="checkAnswer(1,'خطأ')">الماء</button>
+        </div>
+        <div class="content-text" id="content1">
+            <p>التربة مادة هندسية فريدة، تتكون من ثلاثة أطوار:</p>
             <ul>
                 <li><strong>الحبيبات الصلبة:</strong> الهيكل الذي يتحمل الأحمال.</li>
                 <li><strong>الماء:</strong> يملأ الفراغات ويؤثر على قوة القص.</li>
                 <li><strong>الهواء:</strong> يملأ الفراغات المتبقية في التربة الجافة.</li>
             </ul>
-        </div>
-        <div class="quiz">
-            <strong>اختبر نفسك:</strong>
-            <p>أي من التالي ليس من مكونات التربة؟</p>
-            <button onclick="checkAnswer(1, 'خطأ')">الحبيبات الصلبة</button>
-            <button onclick="checkAnswer(1, 'صح')">الزجاج</button>
-            <button onclick="checkAnswer(1, 'خطأ')">الماء</button>
+            <p>تفاصيل أعمق: توزيع الحبيبات وحجم الفراغات يلعب دورًا كبيرًا في خصائص التربة مثل النفاذية والضغط.</p>
         </div>
         <div>
             <button class="btn-nav" onclick="prevStep(1)" disabled><i class="fas fa-arrow-right"></i> السابق</button>
@@ -70,19 +74,20 @@ h2 { color: var(--primary); border-bottom: 2px solid #eee; padding-bottom: 10px;
     <!-- المرحلة 2 -->
     <div class="step-card" id="step2">
         <h2><i class="fas fa-filter"></i> 2. التصنيف الهندسي (USCS) <span class="completed" id="check2"></span></h2>
-        <div class="content-text">
-            يتم تقسيم التربة بناءً على "قطر الحبيبات":
-            <ul>
-                <li><strong>التربة الخشنة:</strong> (حصى ورمل) يتم التعرف عليها بالتحليل المنخلي.</li>
-                <li><strong>التربة الناعمة:</strong> (طمي وطين) يتم التعرف عليها باختبارات اللدونة.</li>
-            </ul>
-            تذكر: التربة الخشنة تستمد قوتها من "الاحتكاك"، بينما الناعمة من "التماسك".
-        </div>
+        <div class="summary">ملخص المهمة: تعرف على أنواع التربة الخشنة والناعمة وكيفية تحديدها.</div>
         <div class="quiz">
             <strong>اختبر نفسك:</strong>
             <p>أي تربة تعتمد على التماسك كمصدر للقوة؟</p>
-            <button onclick="checkAnswer(2, 'صح')">الطمي والطين</button>
-            <button onclick="checkAnswer(2, 'خطأ')">الرمل والحصى</button>
+            <button onclick="checkAnswer(2,'صح')">الطمي والطين</button>
+            <button onclick="checkAnswer(2,'خطأ')">الرمل والحصى</button>
+        </div>
+        <div class="content-text" id="content2">
+            <p>التصنيف الهندسي يعتمد على قطر الحبيبات:</p>
+            <ul>
+                <li><strong>التربة الخشنة:</strong> حصى ورمل، قوتها من الاحتكاك.</li>
+                <li><strong>التربة الناعمة:</strong> طمي وطين، قوتها من التماسك.</li>
+            </ul>
+            <p>تفاصيل أعمق: تحليل الحبيبات والتجارب اللدنية تساعد المهندس على اختيار الأساسات المناسبة.</p>
         </div>
         <div>
             <button class="btn-nav" onclick="prevStep(1)"><i class="fas fa-arrow-right"></i> السابق</button>
@@ -93,19 +98,20 @@ h2 { color: var(--primary); border-bottom: 2px solid #eee; padding-bottom: 10px;
     <!-- المرحلة 3 -->
     <div class="step-card" id="step3">
         <h2><i class="fas fa-vial"></i> 3. حدود أتربرج (Atterberg) <span class="completed" id="check3"></span></h2>
-        <div class="content-text">
-            هذه الحدود تحدد حالة التربة الطينية مع تغير كمية الماء:
-            <ul>
-                <li><strong>حد السيولة (LL):</strong> النقطة التي تبدأ عندها التربة بالتصرف كالسائل.</li>
-                <li><strong>حد اللدونة (PL):</strong> النقطة التي يمكن فيها تشكيل التربة يدوياً.</li>
-            </ul>
-            المؤشر الأهم هو <strong>دليل اللدونة (PI = LL - PL)</strong>.
-        </div>
+        <div class="summary">ملخص المهمة: تعرف على حالات التربة الطينية مع تغير كمية الماء.</div>
         <div class="quiz">
             <strong>اختبر نفسك:</strong>
             <p>ما هو مؤشر اللدونة؟</p>
-            <button onclick="checkAnswer(3, 'صح')">PI = LL - PL</button>
-            <button onclick="checkAnswer(3, 'خطأ')">PI = PL + LL</button>
+            <button onclick="checkAnswer(3,'صح')">PI = LL - PL</button>
+            <button onclick="checkAnswer(3,'خطأ')">PI = PL + LL</button>
+        </div>
+        <div class="content-text" id="content3">
+            <p>حد السيولة (LL) وحد اللدونة (PL) يوضحان سلوك الطين:</p>
+            <ul>
+                <li><strong>LL:</strong> بداية التصرف كسائل.</li>
+                <li><strong>PL:</strong> إمكانية تشكيله يدويًا.</li>
+            </ul>
+            <p>تفاصيل أعمق: فرق LL و PL يعطي مؤشر اللدونة PI، مما يساعد على التنبؤ بالانضغاط والتشوه.</p>
         </div>
         <div>
             <button class="btn-nav" onclick="prevStep(2)"><i class="fas fa-arrow-right"></i> السابق</button>
@@ -116,18 +122,16 @@ h2 { color: var(--primary); border-bottom: 2px solid #eee; padding-bottom: 10px;
     <!-- المرحلة 4 -->
     <div class="step-card" id="step4">
         <h2><i class="fas fa-exclamation-triangle"></i> 4. قدرة التحمل والانهيار <span class="completed" id="check4"></span></h2>
-        <div class="content-text">
-            الهدف النهائي للمهندس هو منع الانهيار. يحدث الانهيار عندما يتجاوز إجهاد القص مقاومة التربة.
-            <br><br>
-            <strong>المعادلة الذهبية:</strong> τ = c + σ tan(φ)
-            <br>
-            حيث (c) هو التماسك و (φ) هي زاوية الاحتكاك.
-        </div>
+        <div class="summary">ملخص المهمة: فهم معادلة القص وكيفية منع انهيار التربة.</div>
         <div class="quiz">
             <strong>اختبر نفسك:</strong>
             <p>ماذا يمثل φ في المعادلة؟</p>
-            <button onclick="checkAnswer(4, 'صح')">زاوية الاحتكاك</button>
-            <button onclick="checkAnswer(4, 'خطأ')">التماسك</button>
+            <button onclick="checkAnswer(4,'صح')">زاوية الاحتكاك</button>
+            <button onclick="checkAnswer(4,'خطأ')">التماسك</button>
+        </div>
+        <div class="content-text" id="content4">
+            <p>المعادلة τ = c + σ tan(φ) تحدد مقاومة التربة للقص.</p>
+            <p>تفاصيل أعمق: زيادة التماسك أو زاوية الاحتكاك تزيد قدرة التحمل، واختيار الأساسات المناسبة يمنع الانهيار.</p>
         </div>
         <div>
             <button class="btn-nav" onclick="prevStep(3)"><i class="fas fa-arrow-right"></i> السابق</button>
@@ -142,29 +146,36 @@ h2 { color: var(--primary); border-bottom: 2px solid #eee; padding-bottom: 10px;
 
 <script>
 let totalSteps = 4;
+
 function nextStep(step) {
     document.querySelectorAll('.step-card').forEach(card => card.classList.remove('active'));
     document.getElementById('step' + step).classList.add('active');
     document.getElementById('stepCounter').innerText = "المرحلة " + step + " من " + totalSteps;
     document.getElementById('progressFill').style.width = (step / totalSteps) * 100 + "%";
 }
+
 function prevStep(step) {
     nextStep(step);
 }
+
 function checkAnswer(step, answer) {
     const nextBtn = document.getElementById('nextBtn' + step);
     const checkMark = document.getElementById('check' + step);
+    const content = document.getElementById('content' + step);
     if(answer === 'صح') {
         alert("إجابة صحيحة! ✅");
         nextBtn.disabled = false;
         checkMark.innerHTML = '✅';
+        content.style.display = 'block'; // إظهار الشرح بعد الإجابة الصحيحة
     } else {
         alert("إجابة خاطئة! حاول مرة أخرى ❌");
     }
 }
+
 function restart() {
     location.reload();
 }
+
 window.onload = () => { document.getElementById('progressFill').style.width = "25%"; };
 </script>
 

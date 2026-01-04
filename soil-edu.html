@@ -1,225 +1,273 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>منصة التربة التفاعلية</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة البرامج التخصصية - إدارة محمد طه</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a237e; /* أزرق ملكي */
+            --accent: #c6a700;  /* ذهبي */
+            --bg: #f8f9fa;
+            --text: #2c3e50;
+        }
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            color: var(--text);
+        }
 
-<style>
-body {
-  margin: 0;
-  font-family: Tahoma, Arial;
-  background: #f2f4f7;
-}
+        /* الهيدر الاحترافي */
+        .main-header {
+            background: linear-gradient(135deg, var(--primary) 0%, #0d47a1 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 5px solid var(--accent);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
 
-.app {
-  max-width: 720px;
-  margin: auto;
-  background: #fff;
-  min-height: 100vh;
-}
+        .main-header h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            letter-spacing: 1px;
+        }
 
-/* أيقونات */
-.icons-bar {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  padding: 15px;
-  background: #0d6efd;
-}
+        .manager-name {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 5px 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50px;
+            font-size: 1rem;
+            border: 1px solid var(--accent);
+        }
 
-.icon-btn {
-  background: #fff;
-  border-radius: 14px;
-  text-align: center;
-  padding: 12px 5px;
-  cursor: pointer;
-  font-size: 13px;
-}
+        .container {
+            max-width: 1100px;
+            margin: -30px auto 40px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 350px;
+        }
 
-.icon-btn i {
-  font-size: 22px;
-  color: #0d6efd;
-}
+        @media (max-width: 900px) {
+            .container { grid-template-columns: 1fr; margin: 10px; }
+        }
 
-/* الأقسام */
-.section {
-  display: none;
-  padding: 15px;
-}
-.section.active {
-  display: block;
-}
+        /* التبويبات */
+        .tabs-bar {
+            grid-column: 1 / -1;
+            background: #f1f1f1;
+            display: flex;
+            border-bottom: 1px solid #ddd;
+        }
 
-/* التبويبات */
-.tabs {
-  display: flex;
-  overflow-x: auto;
-  margin-bottom: 10px;
-}
-.tab {
-  background: #e9ecef;
-  padding: 8px 14px;
-  margin-left: 8px;
-  border-radius: 20px;
-  cursor: pointer;
-  white-space: nowrap;
-  font-size: 13px;
-}
-.tab.active {
-  background: #0d6efd;
-  color: #fff;
-}
+        .tab-item {
+            padding: 18px 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            border-bottom: 3px solid transparent;
+        }
 
-.content-box {
-  background: #f8f9fa;
-  padding: 15px;
-  border-radius: 12px;
-  line-height: 1.8;
-}
+        .tab-item.active {
+            background: white;
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
 
-/* الاختبارات */
-.quiz {
-  margin-top: 15px;
-  background: #ffffff;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-}
-.quiz button {
-  width: 100%;
-  margin-top: 6px;
-  padding: 8px;
-  border-radius: 6px;
-  border: none;
-  background: #0d6efd;
-  color: #fff;
-  font-size: 14px;
-}
-.result {
-  margin-top: 8px;
-  font-weight: bold;
-}
-</style>
+        /* المحتوى */
+        .content-section { padding: 30px; }
+        
+        .score-panel {
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .info-toggle {
+            background: var(--accent);
+            color: #000;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            width: 100%;
+            cursor: pointer;
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-family: inherit;
+        }
+
+        .info-content {
+            display: none;
+            background: #fff9c4;
+            padding: 20px;
+            border-radius: 10px;
+            border-right: 5px solid var(--accent);
+            margin-bottom: 20px;
+            line-height: 1.7;
+            animation: slideIn 0.4s ease-out;
+        }
+
+        /* منطقة الفيديو */
+        .video-side {
+            background: #212121;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .video-box {
+            width: 100%;
+            height: 220px;
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid #444;
+        }
+
+        iframe { width: 100%; height: 100%; border: none; }
+
+        .option-card {
+            background: #fff;
+            border: 1px solid #eee;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+        }
+
+        .option-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-color: var(--primary);
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="app">
+    <header class="main-header">
+        <h1>منصة البرامج التخصصية</h1>
+        <div class="manager-name">إدارة: محمد طه عطا المنان</div>
+    </header>
 
-<!-- أيقونات -->
-<div class="icons-bar">
-  <div class="icon-btn" onclick="openSection(0)"><i class="fas fa-layer-group"></i><div>التربة</div></div>
-  <div class="icon-btn" onclick="openSection(1)"><i class="fas fa-ruler-combined"></i><div>الخصائص</div></div>
-  <div class="icon-btn" onclick="openSection(2)"><i class="fas fa-flask"></i><div>الاختبارات</div></div>
-  <div class="icon-btn" onclick="openSection(3)"><i class="fas fa-building"></i><div>الأساسات</div></div>
-</div>
+    <div class="container">
+        <div class="tabs-bar" id="tabs"></div>
 
-<!-- القسم 1 -->
-<div class="section active">
-  <div class="tabs">
-    <div class="tab active">تعريف</div>
-    <div class="tab">أنواع</div>
-    <div class="tab">مكونات</div>
-  </div>
+        <div class="content-section">
+            <div class="score-panel">رصيد المعرفة: <span id="score">0</span> نقطة</div>
+            
+            <button class="info-toggle" onclick="toggleInfo()">📘 المحتوى العلمي (إظهار/إخفاء)</button>
+            <div id="info-box" class="info-content"></div>
 
-  <div class="content-box">
-    <strong>التربة:</strong> مادة طبيعية ناتجة عن تفكك الصخور، وهي الوسط الذي تنقل عبره الأحمال إلى الأرض.
+            <h3 id="question-title">جاري تحميل السؤال...</h3>
+            <div id="options-list"></div>
+        </div>
 
-    <div class="quiz">
-      <p>❓ التربة تنتج أساساً من:</p>
-      <button onclick="answer(this,true)">تفكك الصخور</button>
-      <button onclick="answer(this,false)">النباتات</button>
-      <button onclick="answer(this,false)">المعادن الصناعية</button>
-      <div class="result"></div>
+        <div class="video-side">
+            <div class="video-box" id="video-frame"></div>
+            <p style="color:#aaa; text-align:center; font-size: 0.8rem; margin-top: 15px;">الشرح المرئي التخصصي</p>
+        </div>
     </div>
-  </div>
-</div>
 
-<!-- القسم 2 -->
-<div class="section">
-  <div class="tabs">
-    <div class="tab active">فيزيائية</div>
-    <div class="tab">ميكانيكية</div>
-    <div class="tab">مائية</div>
-  </div>
-
-  <div class="content-box">
-    <strong>الخصائص الفيزيائية:</strong> تشمل التدرج الحبيبي، الكثافة، المحتوى المائي.
-
-    <div class="quiz">
-      <p>❓ أي خاصية تؤثر مباشرة على الهبوط؟</p>
-      <button onclick="answer(this,true)">الكثافة والماء</button>
-      <button onclick="answer(this,false)">اللون</button>
-      <button onclick="answer(this,false)">الرائحة</button>
-      <div class="result"></div>
-    </div>
-  </div>
-</div>
-
-<!-- القسم 3 -->
-<div class="section">
-  <div class="tabs">
-    <div class="tab active">مخبرية</div>
-    <div class="tab">حقلية</div>
-    <div class="tab">تحليل</div>
-  </div>
-
-  <div class="content-box">
-    <strong>الاختبارات المخبرية:</strong> مثل القص المباشر، البروكتر، وحدود أتربرج.
-
-    <div class="quiz">
-      <p>❓ اختبار البروكتر يحدد:</p>
-      <button onclick="answer(this,true)">الكثافة الجافة القصوى</button>
-      <button onclick="answer(this,false)">زاوية الاحتكاك</button>
-      <button onclick="answer(this,false)">النفاذية</button>
-      <div class="result"></div>
-    </div>
-  </div>
-</div>
-
-<!-- القسم 4 -->
-<div class="section">
-  <div class="tabs">
-    <div class="tab active">سطحية</div>
-    <div class="tab">عميقة</div>
-    <div class="tab">اختيار</div>
-  </div>
-
-  <div class="content-box">
-    <strong>الأساسات السطحية:</strong> تُستخدم عندما تكون قدرة التحمل جيدة.
-
-    <div class="quiz">
-      <p>❓ متى نلجأ للأساسات العميقة؟</p>
-      <button onclick="answer(this,true)">عند ضعف التربة السطحية</button>
-      <button onclick="answer(this,false)">عند قلة الأحمال</button>
-      <button onclick="answer(this,false)">عند الجفاف</button>
-      <div class="result"></div>
-    </div>
-  </div>
-</div>
-
-</div>
+    <audio id="click-sound" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3"></audio>
 
 <script>
-function openSection(i){
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.section')[i].classList.add('active');
-}
+    const db = {
+        "أساسيات التربة": {
+            info: "تعتبر التربة هي الركيزة الأساسية للبرامج الزراعية التخصصية، حيث تتكون من طبقات تسمى (آفاق التربة). الطبقة السطحية هي الأغنى بالمواد العضوية.",
+            video: "kIOnuWp_S_4",
+            questions: [
+                {q: "ماذا تسمى طبقات التربة علمياً؟", a: ["آفاق التربة", "جدران التربة", "غلاف التربة"], c: 0},
+                {q: "أي طبقة هي الأغنى بالمواد العضوية؟", a: ["السطحية", "الصخرية", "الوسطى"], c: 0}
+            ]
+        },
+        "إدارة الموارد": {
+            info: "الإدارة التخصصية للموارد تتطلب فهم نفاذية التربة لتحديد كميات الري المناسبة وتجنب هدر المياه.",
+            video: "m6E0lO_o8bE",
+            questions: [
+                {q: "لماذا ندرس نفاذية التربة؟", a: ["لتحديد نظام الري", "لمعرفة لون التربة", "لزيادة الملوحة"], c: 0}
+            ]
+        }
+    };
 
-function answer(btn,correct){
-  const res = btn.parentElement.querySelector('.result');
-  if(correct){
-    res.textContent = "✅ إجابة صحيحة";
-    res.style.color = "green";
-  } else {
-    res.textContent = "❌ إجابة خاطئة";
-    res.style.color = "red";
-  }
-}
+    let currentCat = Object.keys(db)[0];
+    let score = 0;
+
+    function toggleInfo() {
+        const box = document.getElementById('info-box');
+        box.style.display = (box.style.display === 'block') ? 'none' : 'block';
+    }
+
+    function init() {
+        const bar = document.getElementById('tabs');
+        Object.keys(db).forEach(cat => {
+            const d = document.createElement('div');
+            d.className = 'tab-item';
+            d.innerText = cat;
+            d.onclick = () => {
+                document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+                d.classList.add('active');
+                currentCat = cat;
+                document.getElementById('info-box').style.display = 'none';
+                load();
+            };
+            bar.appendChild(d);
+        });
+        bar.firstChild.classList.add('active');
+        load();
+    }
+
+    function load() {
+        const data = db[currentCat];
+        document.getElementById('info-box').innerText = data.info;
+        document.getElementById('video-frame').innerHTML = `<iframe src="https://www.youtube.com/embed/${data.video}"></iframe>`;
+        
+        const q = data.questions[Math.floor(Math.random() * data.questions.length)];
+        document.getElementById('question-title').innerText = q.q;
+        
+        const list = document.getElementById('options-list');
+        list.innerHTML = '';
+        q.a.forEach((opt, i) => {
+            const div = document.createElement('div');
+            div.className = 'option-card';
+            div.innerText = opt;
+            div.onclick = () => {
+                if(i === q.c) {
+                    document.getElementById('click-sound').play();
+                    score += 20;
+                    document.getElementById('score').innerText = score;
+                    div.style.background = "#c8e6c9";
+                    setTimeout(load, 800);
+                } else {
+                    div.style.background = "#ffccbc";
+                }
+            };
+            list.appendChild(div);
+        });
+    }
+
+    window.onload = init;
 </script>
-
 </body>
 </html>
+

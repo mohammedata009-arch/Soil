@@ -3,141 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة البرامج التخصصية - بوابة الاختبارات الذكية</title>
+    <title>منصة البرامج التخصصية - إدارة محمد طه</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #003366; --gold: #b8860b; --bg: #f8f9fa; }
-        body { font-family: 'Tajawal', sans-serif; background: var(--bg); margin: 0; }
+        :root { --p: #0d47a1; --a: #ffc107; --bg: #f0f4f7; }
+        body { font-family: 'Tajawal', sans-serif; background: var(--bg); margin: 0; padding: 0; }
+        .header { background: var(--p); color: white; padding: 40px 20px; text-align: center; border-bottom: 5px solid var(--a); }
+        .manager { display: inline-block; margin-top: 10px; padding: 5px 25px; background: rgba(255,255,255,0.1); border: 1px solid var(--a); border-radius: 50px; font-size: 0.9rem; }
         
-        .header { background: var(--primary); color: white; padding: 40px 20px; text-align: center; border-bottom: 5px solid var(--gold); }
-        .manager { font-weight: 300; border: 1px solid var(--gold); padding: 5px 25px; border-radius: 50px; display: inline-block; margin-top: 10px; }
+        .main { max-width: 1200px; margin: -20px auto 40px; background: white; display: grid; grid-template-columns: 1.2fr 1fr; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
+        @media (max-width: 900px) { .main { grid-template-columns: 1fr; } }
 
-        .container { max-width: 1100px; margin: -30px auto 50px; display: grid; grid-template-columns: 1fr 350px; gap: 20px; padding: 0 15px; }
-        @media (max-width: 850px) { .container { grid-template-columns: 1fr; } }
+        .tabs { grid-column: 1 / -1; background: #e3f2fd; display: flex; overflow-x: auto; border-bottom: 1px solid #ddd; }
+        .tab { padding: 20px; cursor: pointer; font-weight: bold; border-bottom: 4px solid transparent; transition: 0.3s; white-space: nowrap; }
+        .tab.active { background: white; color: var(--p); border-bottom-color: var(--p); }
 
-        .card { background: white; border-radius: 15px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .test-portal { border: 2px solid #eee; padding: 20px; border-radius: 12px; background: #fff; position: relative; }
+        .content { padding: 30px; }
+        .info-card { background: #fffde7; padding: 25px; border-radius: 12px; border-right: 6px solid var(--a); margin-bottom: 25px; line-height: 1.8; font-size: 1.05rem; }
         
-        .q-badge { background: var(--gold); color: black; padding: 5px 15px; border-radius: 5px; font-size: 0.8rem; font-weight: bold; margin-bottom: 15px; display: inline-block; }
-        
-        .option-btn { display: block; width: 100%; padding: 15px; margin: 10px 0; border: 1px solid #ddd; border-radius: 10px; cursor: pointer; text-align: right; font-family: inherit; font-size: 1rem; transition: 0.3s; }
-        .option-btn:hover { border-color: var(--primary); background: #f0f7ff; transform: scale(1.02); }
+        /* تحسين نافذة الفيديو */
+        .video-box { background: #000; border-radius: 15px; overflow: hidden; aspect-ratio: 16/9; box-shadow: 0 5px 20px rgba(0,0,0,0.4); }
+        iframe { width: 100%; height: 100%; border: none; }
 
-        .progress-bar { height: 10px; background: #ddd; border-radius: 5px; margin-bottom: 20px; overflow: hidden; }
-        .progress-fill { height: 100%; background: var(--gold); width: 0%; transition: 0.5s; }
-
-        iframe { width: 100%; height: 200px; border-radius: 10px; border: none; background: #000; }
-        .stat-box { background: var(--primary); color: white; padding: 15px; border-radius: 10px; text-align: center; }
+        .option { display: block; width: 100%; padding: 15px; margin: 10px 0; border: 2px solid #eee; border-radius: 10px; cursor: pointer; background: #fff; text-align: right; font-family: inherit; font-size: 1rem; transition: 0.2s; }
+        .option:hover { border-color: var(--p); background: #e3f2fd; transform: translateX(-5px); }
+        .score { font-weight: bold; color: var(--p); font-size: 1.2rem; margin-bottom: 15px; display: block; }
     </style>
 </head>
 <body>
 
-<header class="header">
-    <h1>منصة البرامج التخصصية | بوابة الاختبارات</h1>
-    <div class="manager">إدارة: محمد طه عطا المنان</div>
-</header>
+    <header class="header">
+        <h1>منصة البرامج التخصصية</h1>
+        <div class="manager">إدارة: محمد طه عطا المنان</div>
+    </header>
 
-<div class="container">
-    <main class="main-content">
-        <div class="card">
-            <h2 style="color:var(--primary); margin-top:0;">📊 بوابة الاختبار المتجددة</h2>
-            <p style="color: #666;">يتم توليد الأسئلة عشوائياً من قاعدة بيانات الهندسة الجيوتقنية.</p>
-            
-            <div class="progress-bar"><div id="progress" class="progress-fill"></div></div>
+    <div class="main">
+        <nav class="tabs" id="tabs"></nav>
 
-            <div class="test-portal" id="quiz-area">
-                <div class="q-badge" id="q-category">تصنيف السؤال</div>
-                <h3 id="question-text">جاري تحضير السؤال...</h3>
-                <div id="options-box"></div>
-            </div>
-        </div>
-    </main>
+        <section class="content">
+            <span class="score">🏆 مستوى الكفاءة: <span id="pts">0</span></span>
+            <div id="info" class="info-card"></div>
+            <h3 id="q-text" style="color: var(--p); margin-top: 0;"></h3>
+            <div id="opts"></div>
+        </section>
 
-    <aside class="sidebar">
-        <div class="card stat-box">
-            <div style="font-size: 0.9rem;">الرصيد المعرفي التراكمي</div>
-            <div id="score" style="font-size: 2.5rem; font-weight: bold;">0</div>
-            <div>XP</div>
-        </div>
-        
-        <div class="card" style="margin-top:20px; padding:15px;">
-            <h4 style="margin-top:0;">📺 مراجعة سريعة</h4>
-            <div id="video-box"></div>
-            <p id="theory-hint" style="font-size: 0.85rem; color: #555; margin-top: 10px; line-height: 1.5;"></p>
-        </div>
-    </aside>
-</div>
+        <aside style="background: #1a1a1a; padding: 30px;">
+            <div class="video-box" id="vid"></div>
+            <p style="color: #90a4ae; text-align: center; margin-top: 15px;">📽️ المختبر الافتراضي والشرح الهندسي</p>
+        </aside>
+    </div>
+
+    <audio id="snd" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3"></audio>
 
 <script>
-    // بنك الأسئلة المتجدد (يمكن إضافة مئات الأسئلة هنا)
-    const questionBank = [
-        {
-            cat: "ميكانيكا التربة",
-            q: "ما هو الإجراء الفوري عند اكتشاف تربة انتفاخية (Expansive Soil) أسفل الموقع؟",
-            options: ["استبدال التربة بطبقة ردم هندسي", "زيادة كمية الماء في التربة", "تجاهلها تماماً"],
-            correct: 0,
-            hint: "التربة الانتفاخية تتغير في الحجم بشكل كبير عند تغير الرطوبة.",
-            vid: "A567n-46O6Y"
-        },
-        {
-            cat: "الأساسات العميقة",
-            q: "متى نلجأ لاستخدام الارتكاز (End Bearing) في الخوازيق بدلاً من الاحتكاك؟",
-            options: ["عند وجود طبقة صخرية صلبة على عمق معقول", "عندما تكون التربة رملية ناعمة جداً", "عند تأسيس مبنى خشبي خفيف"],
-            correct: 0,
-            hint: "الارتكاز ينقل الحمل مباشرة إلى الطبقة الصخرية القوية.",
-            vid: "im4HVXMGI68"
-        },
-        {
-            cat: "إدارة المياه الجوفية",
-            q: "ما هي الظاهرة الناتجة عن سحب المياه الجوفية بسرعة كبيرة من تربة طينية؟",
-            options: ["زيادة قدرة تحمل التربة", "هبوط مفاجئ للمباني المجاورة", "تصلد التربة بشكل إيجابي"],
-            correct: 1,
-            hint: "سحب الماء يقلل ضغط ماء الفتحات ويزيد الإجهاد الفعال فجأة.",
-            vid: "2p7zE_U8Qmo"
-        }
-    ];
-
-    let score = 0;
-    let answeredCount = 0;
-
-    function nextQuestion() {
-        const q = questionBank[Math.floor(Math.random() * questionBank.length)];
-        document.getElementById('question-text').innerText = q.q;
-        document.getElementById('q-category').innerText = q.cat;
-        document.getElementById('theory-hint').innerText = q.hint;
-        document.getElementById('video-box').innerHTML = `<iframe src="https://www.youtube.com/embed/${q.vid}"></iframe>`;
-        
-        const box = document.getElementById('options-box');
-        box.innerHTML = '';
-        
-        q.options.forEach((opt, i) => {
-            const btn = document.createElement('button');
-            btn.className = 'option-btn';
-            btn.innerText = opt;
-            btn.onclick = () => {
-                if(i === q.correct) {
-                    score += 100;
-                    answeredCount++;
-                    updateUI();
-                    btn.style.background = "#d4edda";
-                    btn.style.borderColor = "#28a745";
-                    setTimeout(nextQuestion, 800);
-                } else {
-                    btn.style.background = "#f8d7da";
-                    alert("⚠️ تحليل هندسي خاطئ! تذكر: " + q.hint);
-                }
-            };
-            box.appendChild(btn);
-        });
+const engineeringBank = {
+    "ميكانيكا الإجهادات": {
+        info: "تعتمد الهندسة الإنشائية على حساب الإجهاد الفعال (Effective Stress) والذي يساوي الإجهاد الكلي ناقص ضغط ماء الفتحات. زيادة هذا الإجهاد تؤدي مباشرة إلى تدعيم الحبيبات وزيادة مقاومة القص في التربة.",
+        video: "kIOnuWp_S_4", 
+        questions: [
+            {q: "ما هو تأثير زيادة ضغط ماء الفتحات (Pore Water Pressure) على الإجهاد الفعال؟", a: ["يؤدي لزيادة الإجهاد الفعال", "يقلل الإجهاد الفعال وقد يسبب التميع", "لا يؤثر على الإجهاد الفعال"], c: 1},
+            {q: "في أي نوع من التربة يظهر تأثير الإجهاد الفعال بشكل أسرع؟", a: ["التربة الرملية (عالية النفاذية)", "التربة الطينية (ضعيفة النفاذية)", "الصخر المصمت"], c: 0}
+        ]
+    },
+    "انهيار التربة والقص": {
+        info: "قانون 'مور-كولوم' يحدد مقاومة القص للتربة بناءً على التماسك (Cohesion) وزاوية الاحتكاك الداخلي. الانهيار يحدث عندما تتجاوز إجهادات القص المطبقة قدرة التربة على المقاومة.",
+        video: "im4HVXMGI68",
+        questions: [
+            {q: "ما هي المعاملات الرئيسية في معادلة مور-كولوم لمقاومة القص؟", a: ["الوزن النوعي والعمق", "التماسك وزاوية الاحتكاك الداخلي", "النفاذية واللزوجة"], c: 1},
+            {q: "لماذا تفقد التربة الرملية المشبعة قوتها أثناء الزلازل؟", a: ["بسبب ظاهرة التميع (Liquefaction)", "بسبب زيادة التماسك", "بسبب نقص الرطوبة"], c: 0}
+        ]
+    },
+    "التحليل الجيوتقني": {
+        info: "اختبار الاختراق القياسي (SPT) يعطي قيمة (N) التي تستخدم لتقدير زاوية الاحتكاك للرمل وقوة القص غير المستنزفة للطين. كما نستخدم اختبار التصلب (Consolidation) للتنبؤ بالهبوط طويل الأمد في الطين المشبع.",
+        video: "2p7zE_U8Qmo",
+        questions: [
+            {q: "ما هو الاختبار المستخدم لتحديد سلوك الهبوط طويل الأمد في التربة الطينية؟", a: ["اختبار الاختراق القياسي", "اختبار التصلب (Consolidation Test)", "اختبار حدود أتربرج"], c: 1}
+        ]
     }
+};
 
-    function updateUI() {
-        document.getElementById('score').innerText = score;
-        const progress = (answeredCount % 10) * 10;
-        document.getElementById('progress').style.width = progress + "%";
-    }
+let currentKey = Object.keys(engineeringBank)[0];
+let points = 0;
 
-    window.onload = nextQuestion;
+function init() {
+    const nav = document.getElementById('tabs');
+    Object.keys(engineeringBank).forEach(k => {
+        const t = document.createElement('div');
+        t.className = 'tab';
+        t.innerText = k;
+        t.onclick = () => {
+            document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+            t.classList.add('active');
+            currentKey = k;
+            render();
+        };
+        nav.appendChild(t);
+    });
+    nav.firstChild.classList.add('active');
+    render();
+}
+
+function render() {
+    const data = engineeringBank[currentKey];
+    document.getElementById('info').innerText = data.info;
+    // تم استخدام معايير اليوتيوب لضمان التشغيل
+    document.getElementById('vid').innerHTML = `<iframe src="https://www.youtube.com/embed/${data.video}?rel=0&modestbranding=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+    
+    const q = data.questions[Math.floor(Math.random() * data.questions.length)];
+    document.getElementById('q-text').innerText = `📑 التحدي الهندسي: ${q.q}`;
+    
+    const box = document.getElementById('opts');
+    box.innerHTML = '';
+    q.a.forEach((opt, i) => {
+        const b = document.createElement('button');
+        b.className = 'option';
+        b.innerText = opt;
+        b.onclick = () => {
+            if(i === q.c) {
+                document.getElementById('snd').play();
+                points += 50;
+                document.getElementById('pts').innerText = points;
+                b.style.background = "#c8e6c9";
+                setTimeout(render, 800);
+            } else {
+                b.style.background = "#ffccbc";
+                alert("تحليل خاطئ! راجع المادة العلمية.");
+            }
+        };
+        box.appendChild(b);
+    });
+}
+
+window.onload = init;
 </script>
 </body>
 </html>

@@ -1,24 +1,225 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <title>مفاهيم التربة والأسئلة</title>
-    <style>
-        body { font-family: sans-serif; background: #fafafa; padding: 20px; }
-        .card { max-width: 700px; margin: auto; background: white; padding: 25px; border-radius: 15px; text-align: right; }
-        .opt { display: block; background: #f1f3f4; padding: 12px; margin: 8px 0; border-radius: 8px; cursor: pointer; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>منصة التربة التفاعلية</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+body {
+  margin: 0;
+  font-family: Tahoma, Arial;
+  background: #f2f4f7;
+}
+
+.app {
+  max-width: 720px;
+  margin: auto;
+  background: #fff;
+  min-height: 100vh;
+}
+
+/* أيقونات */
+.icons-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  padding: 15px;
+  background: #0d6efd;
+}
+
+.icon-btn {
+  background: #fff;
+  border-radius: 14px;
+  text-align: center;
+  padding: 12px 5px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.icon-btn i {
+  font-size: 22px;
+  color: #0d6efd;
+}
+
+/* الأقسام */
+.section {
+  display: none;
+  padding: 15px;
+}
+.section.active {
+  display: block;
+}
+
+/* التبويبات */
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  margin-bottom: 10px;
+}
+.tab {
+  background: #e9ecef;
+  padding: 8px 14px;
+  margin-left: 8px;
+  border-radius: 20px;
+  cursor: pointer;
+  white-space: nowrap;
+  font-size: 13px;
+}
+.tab.active {
+  background: #0d6efd;
+  color: #fff;
+}
+
+.content-box {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 12px;
+  line-height: 1.8;
+}
+
+/* الاختبارات */
+.quiz {
+  margin-top: 15px;
+  background: #ffffff;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+.quiz button {
+  width: 100%;
+  margin-top: 6px;
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  background: #0d6efd;
+  color: #fff;
+  font-size: 14px;
+}
+.result {
+  margin-top: 8px;
+  font-weight: bold;
+}
+</style>
 </head>
+
 <body>
-    <div class="card">
-        <h2>🌱 أكاديمية التربة</h2>
-        <iframe width="100%" height="350" src="https://www.youtube.com/embed/Z8ywFunlwF4" frameborder="0"></iframe>
-        <div id="quiz">
-            <h3>📝 سؤال سريع:</h3>
-            <p>أي نوع تربة له نفاذية أقل؟</p>
-            <div class="opt" onclick="alert('خطأ')">الرمل</div>
-            <div class="opt" onclick="alert('صحيح!')">الطين</div>
-        </div>
+
+<div class="app">
+
+<!-- أيقونات -->
+<div class="icons-bar">
+  <div class="icon-btn" onclick="openSection(0)"><i class="fas fa-layer-group"></i><div>التربة</div></div>
+  <div class="icon-btn" onclick="openSection(1)"><i class="fas fa-ruler-combined"></i><div>الخصائص</div></div>
+  <div class="icon-btn" onclick="openSection(2)"><i class="fas fa-flask"></i><div>الاختبارات</div></div>
+  <div class="icon-btn" onclick="openSection(3)"><i class="fas fa-building"></i><div>الأساسات</div></div>
+</div>
+
+<!-- القسم 1 -->
+<div class="section active">
+  <div class="tabs">
+    <div class="tab active">تعريف</div>
+    <div class="tab">أنواع</div>
+    <div class="tab">مكونات</div>
+  </div>
+
+  <div class="content-box">
+    <strong>التربة:</strong> مادة طبيعية ناتجة عن تفكك الصخور، وهي الوسط الذي تنقل عبره الأحمال إلى الأرض.
+
+    <div class="quiz">
+      <p>❓ التربة تنتج أساساً من:</p>
+      <button onclick="answer(this,true)">تفكك الصخور</button>
+      <button onclick="answer(this,false)">النباتات</button>
+      <button onclick="answer(this,false)">المعادن الصناعية</button>
+      <div class="result"></div>
     </div>
+  </div>
+</div>
+
+<!-- القسم 2 -->
+<div class="section">
+  <div class="tabs">
+    <div class="tab active">فيزيائية</div>
+    <div class="tab">ميكانيكية</div>
+    <div class="tab">مائية</div>
+  </div>
+
+  <div class="content-box">
+    <strong>الخصائص الفيزيائية:</strong> تشمل التدرج الحبيبي، الكثافة، المحتوى المائي.
+
+    <div class="quiz">
+      <p>❓ أي خاصية تؤثر مباشرة على الهبوط؟</p>
+      <button onclick="answer(this,true)">الكثافة والماء</button>
+      <button onclick="answer(this,false)">اللون</button>
+      <button onclick="answer(this,false)">الرائحة</button>
+      <div class="result"></div>
+    </div>
+  </div>
+</div>
+
+<!-- القسم 3 -->
+<div class="section">
+  <div class="tabs">
+    <div class="tab active">مخبرية</div>
+    <div class="tab">حقلية</div>
+    <div class="tab">تحليل</div>
+  </div>
+
+  <div class="content-box">
+    <strong>الاختبارات المخبرية:</strong> مثل القص المباشر، البروكتر، وحدود أتربرج.
+
+    <div class="quiz">
+      <p>❓ اختبار البروكتر يحدد:</p>
+      <button onclick="answer(this,true)">الكثافة الجافة القصوى</button>
+      <button onclick="answer(this,false)">زاوية الاحتكاك</button>
+      <button onclick="answer(this,false)">النفاذية</button>
+      <div class="result"></div>
+    </div>
+  </div>
+</div>
+
+<!-- القسم 4 -->
+<div class="section">
+  <div class="tabs">
+    <div class="tab active">سطحية</div>
+    <div class="tab">عميقة</div>
+    <div class="tab">اختيار</div>
+  </div>
+
+  <div class="content-box">
+    <strong>الأساسات السطحية:</strong> تُستخدم عندما تكون قدرة التحمل جيدة.
+
+    <div class="quiz">
+      <p>❓ متى نلجأ للأساسات العميقة؟</p>
+      <button onclick="answer(this,true)">عند ضعف التربة السطحية</button>
+      <button onclick="answer(this,false)">عند قلة الأحمال</button>
+      <button onclick="answer(this,false)">عند الجفاف</button>
+      <div class="result"></div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+function openSection(i){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.section')[i].classList.add('active');
+}
+
+function answer(btn,correct){
+  const res = btn.parentElement.querySelector('.result');
+  if(correct){
+    res.textContent = "✅ إجابة صحيحة";
+    res.style.color = "green";
+  } else {
+    res.textContent = "❌ إجابة خاطئة";
+    res.style.color = "red";
+  }
+}
+</script>
+
 </body>
 </html>

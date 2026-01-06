@@ -1,212 +1,77 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>الأساسات مع Quiz</title>
-<style>
-body{
-    font-family: Arial, Tahoma;
-    background:#f2f4f7;
-    margin:0;
-    line-height:1.8;
-}
-header{
-    background:#0b3c5d;
-    color:#fff;
-    padding:25px;
-    text-align:center;
-}
-.container{
-    max-width:900px;
-    margin:auto;
-    padding:15px;
-}
-.section{
-    background:#fff;
-    padding:20px;
-    margin-bottom:20px;
-    border-radius:12px;
-    box-shadow:0 4px 8px rgba(0,0,0,0.08);
-    display:none;
-}
-h2{
-    color:#0b3c5d;
-    border-right:6px solid #0b3c5d;
-    padding-right:10px;
-}
-img{
-    width:100%;
-    max-width:600px;
-    display:block;
-    margin:15px auto;
-    border-radius:10px;
-}
-.step{
-    background:#eef6ff;
-    margin:8px 0;
-    padding:10px;
-    border-right:5px solid #0b3c5d;
-    border-radius:6px;
-}
-button{
-    background:#1f3c88;
-    color:white;
-    border:none;
-    padding:10px 20px;
-    font-size:16px;
-    border-radius:8px;
-    cursor:pointer;
-    margin-top:15px;
-}
-button:hover{
-    background:#0b2a5d;
-}
-.quiz{
-    display:none;
-    margin-top:15px;
-}
-.quiz h3{
-    margin-bottom:10px;
-}
-.quiz label{
-    display:block;
-    margin:5px 0;
-}
-.result{
-    margin-top:10px;
-    font-weight:bold;
-}
-footer{
-    background:#ddd;
-    text-align:center;
-    padding:15px;
-    font-size:14px;
-}
-</style>
+    <style>
+        /* مؤثرات ناعمة للحركة */
+        .fade-in { animation: fadeIn 0.8s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .scenario-card {
+            border: 2px dashed #3498db;
+            border-radius: 15px;
+            padding: 15px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            background: #f9f9f9;
+            text-align: center;
+        }
+        .scenario-card:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        
+        .video-window {
+            background: #2c3e50;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px;
+            min-width: 250px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .btn-nav { padding: 10px 25px; cursor: pointer; border-radius: 5px; border: none; background: #27ae60; color: white; font-weight: bold; }
+    </style>
 </head>
-
 <body>
-<header>
-<h1>الأساسات في الهندسة المدنية + Quiz</h1>
-<p>تعلم و اختبر معلوماتك</p>
-</header>
 
-<div class="container">
+    <div class="container fade-in">
+        <section id="combined-info">
+            <h2>شرح: القواعد المشتركة (Combined Footings)</h2>
+            <p>يتم اللجوء إليها عند تداخل القواعد المنفصلة نتيجة تقارب الأعمدة، وتعمل ككتلة واحدة لتوزيع الإجهادات بشكل منتظم.</p>
+        </section>
 
-<!-- الشريطي -->
-<div class="section" id="strip">
-<h2>الأساس الشريطي</h2>
-<p>الأساس الشريطي هو أساس خرساني مستمر أسفل الحوائط الحاملة لنقل الأحمال.</p>
-<img src="https://via.placeholder.com/600x350?text=Strip+Foundation" alt="الأساس الشريطي">
-<div class="step">1️⃣ تحديد المحاور</div>
-<div class="step">2️⃣ حفر الخندق</div>
-<div class="step">3️⃣ صب خرسانة النظافة</div>
-<div class="step">4️⃣ تركيب حديد التسليح</div>
-<div class="step">5️⃣ صب الخرسانة والدمك</div>
-<div class="step">6️⃣ المعالجة والردم</div>
-<button onclick="showQuiz('strip')">التالي - Quiz</button>
+        <div style="display: flex; justify-content: space-around; margin: 20px 0;">
+            <div class="scenario-card" onclick="playScenario('soil')">
+                <img src="https://img.freepik.com/free-vector/underground-layers-earth-surface-concept_1308-41078.jpg" width="120" alt="تربة">
+                <h4>سيناريو التربة</h4>
+            </div>
+            <div class="scenario-card" onclick="playScenario('load')">
+                <img src="https://img.freepik.com/free-vector/crane-building-concept-illustration_114360-5421.jpg" width="120" alt="أحمال">
+                <h4>سيناريو الأحمال</h4>
+            </div>
+        </div>
 
-<div class="quiz" id="quiz-strip">
-<h3>سؤال: الأساس الشريطي يستخدم عادةً تحت؟</h3>
-<label><input type="radio" name="q1" value="0"> الأعمدة المفردة</label>
-<label><input type="radio" name="q1" value="1"> الحوائط الحاملة</label>
-<label><input type="radio" name="q1" value="0"> التربة الضعيفة فقط</label>
-<button onclick="checkAnswer('strip')">تحقق من الإجابة</button>
-<div class="result" id="result-strip"></div>
-<button onclick="nextSection('isolated')">التالي إلى الأساس المنفرد</button>
-</div>
-</div>
+        <hr>
 
-<!-- المنفرد -->
-<div class="section" id="isolated">
-<h2>الأساس المنفرد</h2>
-<p>الأساس المنفرد هو قاعدة خرسانية تحت عمود واحد فقط.</p>
-<img src="https://via.placeholder.com/600x350?text=Isolated+Foundation" alt="الأساس المنفرد">
-<div class="step">1️⃣ تحديد موقع العمود</div>
-<div class="step">2️⃣ حفر حسب الأبعاد</div>
-<div class="step">3️⃣ صب خرسانة النظافة</div>
-<div class="step">4️⃣ تركيب حديد القاعدة</div>
-<div class="step">5️⃣ صب الخرسانة والدمك</div>
-<div class="step">6️⃣ المعالجة والردم</div>
-<button onclick="showQuiz('isolated')">التالي - Quiz</button>
+        <div style="display: flex; align-items: center; justify-content: center; gap: 15px; flex-wrap: wrap;">
+            <button class="btn-nav" onclick="location.href='index.html'">السابق</button>
 
-<div class="quiz" id="quiz-isolated">
-<h3>سؤال: الأساس المنفرد يوضع عادةً تحت؟</h3>
-<label><input type="radio" name="q2" value="1"> العمود المفرد</label>
-<label><input type="radio" name="q2" value="0"> الحائط الحامل</label>
-<label><input type="radio" name="q2" value="0"> القواعد المتصلة</label>
-<button onclick="checkAnswer('isolated')">تحقق من الإجابة</button>
-<div class="result" id="result-isolated"></div>
-<button onclick="nextSection('piles')">التالي إلى أساسات الخوازيق</button>
-</div>
-</div>
+            <div class="video-window">
+                <strong style="display: block; margin-bottom: 5px; color: #f1c40f;">📺 مكتبة الفيديوهات:</strong>
+                <a href="https://www.youtube.com/watch?v=9GPyCnDaeM4" target="_blank" style="color: #ecf0f1; text-decoration: none; font-size: 14px;">1. تنفيذ الأساسات السطحية</a><br>
+                <a href="https://www.youtube.com/watch?v=tk1vmlO77Pk" target="_blank" style="color: #ecf0f1; text-decoration: none; font-size: 14px;">2. تنفيذ الخوازيق</a>
+            </div>
 
-<!-- الخوازيق -->
-<div class="section" id="piles">
-<h2>أساسات الخوازيق</h2>
-<p>الخوازيق هي أساسات عميقة تستخدم لنقل الأحمال إلى طبقات التربة الصلبة.</p>
-<img src="https://via.placeholder.com/600x350?text=Piles+Foundation" alt="أساسات الخوازيق">
-<div class="step">1️⃣ تحديد مواقع الخوازيق</div>
-<div class="step">2️⃣ الحفر بالمعدة</div>
-<div class="step">3️⃣ تنظيف الحفرة</div>
-<div class="step">4️⃣ تركيب قفص التسليح</div>
-<div class="step">5️⃣ صب الخرسانة</div>
-<div class="step">6️⃣ قطع الرأس</div>
-<div class="step">7️⃣ صب قبعة الخوازيق</div>
-<button onclick="showQuiz('piles')">التالي - Quiz</button>
+            <button class="btn-nav" onclick="alert('سيتم فتح قسم اللبشة قريباً')">التالي</button>
+        </div>
+    </div>
 
-<div class="quiz" id="quiz-piles">
-<h3>سؤال: الخوازيق تستخدم عادةً عندما؟</h3>
-<label><input type="radio" name="q3" value="0"> التربة جيدة فقط</label>
-<label><input type="radio" name="q3" value="0"> المباني منخفضة فقط</label>
-<label><input type="radio" name="q3" value="1"> التربة السطحية ضعيفة والمباني ثقيلة</label>
-<button onclick="checkAnswer('piles')">تحقق من الإجابة</button>
-<div class="result" id="result-piles"></div>
-<button onclick="finish()">انهاء التعلم</button>
-</div>
-</div>
-
-<footer>
-© منصة البرامج التخصصية – الهندسة المدنية
-</footer>
-
-<script>
-let sections = ['strip','isolated','piles'];
-let current = 0;
-document.getElementById(sections[current]).style.display='block';
-
-function showQuiz(sectionId){
-    document.getElementById('quiz-'+sectionId).style.display='block';
-}
-
-function checkAnswer(sectionId){
-    let quiz = document.querySelector('#quiz-'+sectionId);
-    let radios = quiz.querySelectorAll('input[type=radio]');
-    let resultDiv = document.getElementById('result-'+sectionId);
-    let correct=false;
-    radios.forEach(r=>{
-        if(r.checked && r.value==='1') correct=true;
-    });
-    if(correct){
-        resultDiv.innerText='✅ إجابة صحيحة!';
-        resultDiv.style.color='green';
-    } else {
-        resultDiv.innerText='❌ إجابة خاطئة، حاول مرة أخرى.';
-        resultDiv.style.color='red';
-    }
-}
-
-function nextSection(nextId){
-    document.getElementById(sections[current]).style.display='none';
-    document.getElementById(nextId).style.display='block';
-    current = sections.indexOf(nextId);
-}
-
-function finish(){
-    alert('🎉 لقد أنهيت جميع الأقسام مع الاختبارات!');
-}
-</script>
-
+    <script>
+        function playScenario(type) {
+            if(type === 'soil') {
+                alert("السيناريو: التربة ضعيفة جداً! الحل هو توزيع الحمل على مساحة أكبر باستخدام 'اللبشة'.");
+            } else {
+                alert("السيناريو: الأحمال مركزة في نقطة واحدة! نستخدم قاعدة منفصلة قوية مدعمة بالحديد.");
+            }
+        }
+    </script>
 </body>
 </html>
+

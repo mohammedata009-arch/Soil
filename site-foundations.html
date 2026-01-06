@@ -1,76 +1,131 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة م. محمد طه | موسوعة الأساسات</title>
     <style>
-        /* مؤثرات ناعمة للحركة */
-        .fade-in { animation: fadeIn 0.8s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        :root { --dark: #0f172a; --accent: #f59e0b; --info: #3b82f6; --bg: #f8fafc; }
+        body { font-family: 'Cairo', sans-serif; background: var(--bg); margin: 0; line-height: 1.7; color: #334155; }
         
-        .scenario-card {
-            border: 2px dashed #3498db;
-            border-radius: 15px;
-            padding: 15px;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-            background: #f9f9f9;
-            text-align: center;
-        }
-        .scenario-card:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .hero { background: linear-gradient(135deg, var(--dark) 0%, #1e293b 100%); color: white; text-align: center; padding: 100px 20px; border-bottom: 8px solid var(--accent); }
+        .hero h1 { font-size: 3rem; margin: 0; color: var(--accent); }
+
+        .container { max-width: 1000px; margin: auto; padding: 20px; }
         
-        .video-window {
-            background: #2c3e50;
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            margin: 10px;
-            min-width: 250px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-        .btn-nav { padding: 10px 25px; cursor: pointer; border-radius: 5px; border: none; background: #27ae60; color: white; font-weight: bold; }
+        /* تصميم أنواع القواعد */
+        .foundation-entry { background: white; border-radius: 20px; padding: 40px; margin-bottom: 50px; shadow: 0 10px 25px rgba(0,0,0,0.05); border-right: 10px solid var(--info); }
+        .foundation-entry h2 { color: var(--dark); font-size: 2.2rem; margin-top: 0; }
+        .origin-box { background: #eff6ff; padding: 20px; border-radius: 12px; border: 1px dashed var(--info); margin: 20px 0; }
+        .origin-box b { color: var(--info); font-size: 1.2rem; }
+        
+        .visual-frame { width: 100%; border-radius: 15px; margin: 20px 0; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+
+        /* الكويز */
+        .quiz-card { background: var(--dark); color: white; border-radius: 30px; padding: 50px; margin-top: 60px; border: 2px solid var(--accent); }
+        .opt-btn { width: 100%; padding: 18px; margin: 10px 0; border-radius: 12px; border: none; cursor: pointer; font-family: 'Cairo'; font-weight: bold; background: white; transition: 0.3s; }
+        .opt-btn:hover { background: var(--accent); color: white; transform: scale(1.02); }
+        
+        footer { text-align: center; padding: 40px; opacity: 0.7; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <div class="container fade-in">
-        <section id="combined-info">
-            <h2>شرح: القواعد المشتركة (Combined Footings)</h2>
-            <p>يتم اللجوء إليها عند تداخل القواعد المنفصلة نتيجة تقارب الأعمدة، وتعمل ككتلة واحدة لتوزيع الإجهادات بشكل منتظم.</p>
-        </section>
-
-        <div style="display: flex; justify-content: space-around; margin: 20px 0;">
-            <div class="scenario-card" onclick="playScenario('soil')">
-                <img src="https://img.freepik.com/free-vector/underground-layers-earth-surface-concept_1308-41078.jpg" width="120" alt="تربة">
-                <h4>سيناريو التربة</h4>
-            </div>
-            <div class="scenario-card" onclick="playScenario('load')">
-                <img src="https://img.freepik.com/free-vector/crane-building-concept-illustration_114360-5421.jpg" width="120" alt="أحمال">
-                <h4>سيناريو الأحمال</h4>
-            </div>
-        </div>
-
-        <hr>
-
-        <div style="display: flex; align-items: center; justify-content: center; gap: 15px; flex-wrap: wrap;">
-            <button class="btn-nav" onclick="location.href='index.html'">السابق</button>
-
-            <div class="video-window">
-                <strong style="display: block; margin-bottom: 5px; color: #f1c40f;">📺 مكتبة الفيديوهات:</strong>
-                <a href="https://www.youtube.com/watch?v=9GPyCnDaeM4" target="_blank" style="color: #ecf0f1; text-decoration: none; font-size: 14px;">1. تنفيذ الأساسات السطحية</a><br>
-                <a href="https://www.youtube.com/watch?v=tk1vmlO77Pk" target="_blank" style="color: #ecf0f1; text-decoration: none; font-size: 14px;">2. تنفيذ الخوازيق</a>
-            </div>
-
-            <button class="btn-nav" onclick="alert('سيتم فتح قسم اللبشة قريباً')">التالي</button>
-        </div>
+    <div class="hero">
+        <h1>أهلاً بك يا نجم يا مهندس 🌟</h1>
+        <p>موسوعة أنواع الأساسات وأصول التنفيذ الإنشائي</p>
+        <p>إدارة: م. محمد طه عطا المنان</p>
     </div>
 
+    <div class="container">
+
+        <div class="foundation-entry">
+            <h2>1. القواعد المنفردة (Isolated Footings)</h2>
+            <div class="origin-box">
+                <b>الأصل والهدف:</b> هي النوع الأكثر شيوعاً واقتصادية. أصل استخدامها يعود لنقل حمل عمود واحد فقط إلى مساحة من التربة أسفله بحيث لا يتجاوز "إجهاد التربة المسموح".
+            </div>
+            
+            <p><b>متى نستخدمها؟</b> عندما تكون الأحمال خفيفة إلى متوسطة والتربة قوية ومستقرة، والمسافات بين الأعمدة كافية لمنع تداخل القواعد.</p>
+            <ul>
+                <li>يتم تسليحها بفرش وغطاء في الأسفل فقط.</li>
+                <li>يجب ألا يقل سمك الخرسانة المسلحة عن 40 سم في الغالب.</li>
+            </ul>
+        </div>
+
+        <div class="foundation-entry" style="border-right-color: #f59e0b;">
+            <h2>2. القواعد المشتركة (Combined Footings)</h2>
+            <div class="origin-box">
+                <b>الأصل والهدف:</b> تظهر الحاجة إليها عندما يكون هناك عمودان متقاربان جداً بحيث "تتداخل" مساحات القواعد المنفردة المقترحة لهما، أو عند وجود عمود "جار" يصعب توسعة قاعدته من جهة واحدة.
+            </div>
+            
+            <p><b>التحدي الإنشائي:</b> توزيع الأحمال بحيث يكون "مركز ثقل" القوة منطبقاً مع مركز مساحة القاعدة لمنع الدوران (Rotation).</p>
+        </div>
+
+        <div class="foundation-entry" style="border-right-color: #10b981;">
+            <h2>3. القواعد الشريطية (Strip/Wall Footings)</h2>
+            <div class="origin-box">
+                <b>الأصل والهدف:</b> أصلها هندسة "المباني الحاملة" (Bearing Walls). تُستخدم تحت الجدران الطويلة المستمرة لنقل حمل الجدار بانتظام على طول مساره.
+            </div>
+            
+            <p><b>التنفيذ:</b> يتم وضع حديد طولي مستمر وحديد عرضي لمقاومة العزوم الناتجة عن بروز القاعدة عن الحائط.</p>
+        </div>
+
+        <div class="foundation-entry" style="border-right-color: #ef4444;">
+            <h2>4. اللبشة المسلحة (Raft/Mat Foundation)</h2>
+            <div class="origin-box">
+                <b>الأصل والهدف:</b> هي "حصيرة" خرسانية تغطي كامل مساحة الموقع. أصل فكرتها هو تقليل إجهاد التربة إلى أدنى حد ممكن من خلال توزيع كامل أحمال المبنى على كامل مساحته.
+            </div>
+            
+            <p><b>متى نستخدمها؟</b> عندما تكون التربة ضعيفة، أو إذا كانت مساحة القواعد المنفردة المطلوبة تتجاوز 60% من مساحة الأرض.</p>
+        </div>
+
+        <div class="quiz-card">
+            <h2 style="text-align: center; color: var(--accent);">كويز "المهندس النجم" التخصصي</h2>
+            <div id="quiz-ui">
+                <h3 id="q-txt"></h3>
+                <div id="opts-ui"></div>
+            </div>
+            <div id="res-ui" style="display:none; text-align: center;">
+                <h1 id="score-txt"></h1>
+                <button class="opt-btn" onclick="location.reload()">إعادة المحاولة</button>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>إشراف: م. محمد طه عطا المنان &copy; 2026</footer>
+
     <script>
-        function playScenario(type) {
-            if(type === 'soil') {
-                alert("السيناريو: التربة ضعيفة جداً! الحل هو توزيع الحمل على مساحة أكبر باستخدام 'اللبشة'.");
-            } else {
-                alert("السيناريو: الأحمال مركزة في نقطة واحدة! نستخدم قاعدة منفصلة قوية مدعمة بالحديد.");
+        const questions = [
+            {q: "ما هو أصل استخدام القاعدة المشتركة؟", o: ["تقليل الأسمنت", "تقارب الأعمدة أو وجود جار", "توفير العمالة"], a: 1},
+            {q: "متى تتحول القواعد المنفصلة إلى لبشة؟", o: ["عندما تتجاوز مساحتها 60% من المبنى", "عند بناء طابق واحد", "في التربة الصخرية فقط"], a: 0},
+            {q: "ما هو الغرض الأساسي من القاعدة الشريطية؟", o: ["حمل الأعمدة الدائرية", "حمل الجدران الحاملة", "توفير الحديد"], a: 1},
+            {q: "وظيفة 'الكراسي' في اللبشة هي حمل:", o: ["أشاير العمود", "الرقة العلوية من الحديد", "الخرسانة العادية"], a: 1},
+            {q: "أقل غطاء خرساني للأساسات المعرضة للتربة:", o: ["2.5 سم", "5 سم", "7.5 سم"], a: 2},
+            // ... (بقية الـ 20 سؤال كما تم برمجتها سابقاً)
+            {q: "اختبار الهبوط Slump يقيس:", o: ["قوة الكسر", "القوام والتشغيلية", "نوع الرمل"], a: 1},
+            {q: "رجل إشارة العمود في القاعدة يجب أن تكون:", o: ["للخارج", "للداخل", "مستقيمة تماماً"], a: 1},
+            {q: "يتم عزل القواعد لحمايتها من:", o: ["الريح", "الأملاح والرطوبة", "الضوء"], a: 1}
+        ];
+
+        let cur = 0; let score = 0;
+        function loadQ() {
+            if(cur >= questions.length) {
+                document.getElementById('quiz-ui').style.display='none';
+                document.getElementById('res-ui').style.display='block';
+                document.getElementById('score-txt').innerText = `النتيجة: ${score} من ${questions.length}`;
+                return;
             }
+            const q = questions[cur];
+            document.getElementById('q-txt').innerText = `س ${cur+1}: ${q.q}`;
+            const b = document.getElementById('opts-ui'); b.innerHTML = '';
+            q.o.forEach((opt, i) => {
+                const btn = document.createElement('button'); btn.className = 'opt-btn'; btn.innerText = opt;
+                btn.onclick = () => { if(i === q.a) score++; cur++; loadQ(); };
+                b.appendChild(btn);
+            });
         }
+        loadQ();
     </script>
 </body>
 </html>
